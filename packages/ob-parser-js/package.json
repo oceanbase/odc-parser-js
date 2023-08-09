@@ -1,6 +1,6 @@
 {
   "name": "@oceanbase-odc/ob-parser-js",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "OB 前端解析工具库",
   "main": "./lib/index.js",
   "module": "./esm/index.js",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/oceanbase/odc-parser-js/packages/ob-parser-js"
+    "url": "https://github.com/oceanbase/odc-parser-js"
   },
   "dependencies": {
     "antlr4": "~4.8.0",
