@@ -11,7 +11,7 @@ importers:
   packages/monaco-plugin-ob:
     dependencies:
       '@oceanbase-odc/ob-parser-js':
-        specifier: workspace:^2.0.6
+        specifier: workspace:^2
         version: link:../ob-parser-js
       antlr4:
         specifier: ~4.8.0
