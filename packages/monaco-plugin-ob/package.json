@@ -1,6 +1,6 @@
 {
   "name": "@oceanbase-odc/monaco-plugin-ob",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -11,6 +11,10 @@
     "buildExample": "webpack -c ./example/config/webpack.config.prod.js",
     "build": "tsc && npm run buildWorker",
     "watch": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oceanbase/odc-parser-js/packages/monaco-plugin-ob"
   },
   "keywords": [
     "Monaco",
