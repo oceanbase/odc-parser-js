@@ -1,0 +1,14 @@
+[
+    {
+        "sql": "delimiter //",
+        "delimiter": ""
+    },
+    {
+        "sql": "\nselect * from a;",
+        "delimiter": "//"
+    },
+    {
+        "sql": "\nselect * from b;",
+        "delimiter": ""
+    }
+]

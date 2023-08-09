@@ -1,0 +1,14 @@
+[
+    {
+        "sql": "delimiter //",
+        "delimiter": ""
+    },
+    {
+        "sql": "\nDECLARE\n  -- Local variables here\n  i NUMBER;\nBEGIN\n  -- Test statements here\n  dbms_output.put_line('Hello World!');\nEND;\nselect * from a;",
+        "delimiter": "//"
+    },
+    {
+        "sql": "\ncreate or replace PROCEDURE ab1 as\nbegin \nselect * from b;\nend;",
+        "delimiter": ""
+    }
+]

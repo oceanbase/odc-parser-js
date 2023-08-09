@@ -1,0 +1,17 @@
+{
+    "include": ["./src/**/*"],
+    "compilerOptions": {
+        "outDir": "./esm",
+        "allowJs": true,
+        "target": "es5",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        // "declaration": true,
+        // "declarationDir": "./esm",
+        "lib": ["ES2016", "DOM"]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

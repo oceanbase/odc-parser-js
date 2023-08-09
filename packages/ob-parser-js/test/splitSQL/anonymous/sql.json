@@ -1,0 +1,18 @@
+[
+    {
+        "sql": "begin\n  dbms_output.put_line('hello world');\nend;",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\ndeclare\n  l_today date := sysdate;\n  begin\n  dbms_output.put_line(\n  'today is '||to_char(l_today,'Day'));\n  exception when others then\n  dbms_output.put_line(sqlerrm);\n  end;",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\nbegin\n    if 1=2 then\n       update OC_USER_OPERATION_EXECUTE set status = 2, exec_status = 5, response_time = sysdate,error_code = 10035, error_msg = '失败', retry_times = 2, response_content = '失败' where operation_id = 100005469 and (home_city =590);\n       if 1=1 then\n          insert into oc_user_order_execute_op (operation_id,order_id,create_id,create_time,create_source,exec_status,home_city,month,ver,exec_level,obj_city, obj_type, obj_id, obj_number,trade_id,seq) values (SEQ_OC_OD_EXEC_OP.nextval,100656654,331,sysdate,201028,0,590,202201,1,2,590,2,121544,12333333,12323232,3232);\n        end if;\n    else\n       update OC_USER_OPERATION_EXECUTE set status = 2, exec_status = 2, response_time = sysdate, request_time = sysdate + 2/24/60/60, error_code = 10035, error_msg = '失败', retry_times = 2 where operation_id = 100005469 and (home_city = 590);\n    end if;\n    INSERT INTO H_OC_USER_OPERATION_EXECUTE(history_id,insert_month,insert_time,operation_id,operation_type_id,home_city,month,request_time,status,response_content,response_time,priority,exec_time,exec_status,error_code,error_msg,retry_times,last_retry_time,ver,retry_type,exec_level) SELECT seq_oc_operation_id.nextval,to_char(sysdate,'yyyymm'),sysdate,operation_id,operation_type_id,home_city,month,request_time,status,response_content,response_time,priority,exec_time,exec_status,error_code,error_msg,retry_times,last_retry_time,ver,retry_type,exec_level from OC_USER_OPERATION_EXECUTE WHERE operation_id = 100005469 and (home_city = 590);\n  end;",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\ndeclare\n  create_package varchar(600) := '\n  CREATE OR REPLACE PACKAGE trans_data AS\n  TYPE TimeRec IS RECORD (\n  minutes SMALLINT,\n  hours   SMALLINT);\n  TYPE TransRec IS RECORD (\n  category VARCHAR2(10),\n  account  INT,\n  amount   REAL,\n  time_of  TimeRec);\n  minimum_balance     CONSTANT REAL := 10.00;\n  number_processed    INT;\n  insufficient_funds  EXCEPTION;\n  END trans_data;\n  ';\n  begin\n  execute immediate create_package;\n  execute immediate '\n  CREATE OR REPLACE PACKAGE aa_pkg IS\n  TYPE aa_type IS TABLE OF INTEGER INDEX BY VARCHAR2(15);\n  END;\n  ';\n  execute immediate '\n  CREATE OR REPLACE PROCEDURE print_aa (\n  aa aa_pkg.aa_type\n  ) IS\n  i  VARCHAR2(15);\n  BEGIN\n  i := aa.FIRST;\n\n  WHILE i IS NOT NULL LOOP\n  DBMS_OUTPUT.PUT_LINE (aa(i) || i);\n  i := aa.NEXT(i);\n  END LOOP;\n  END;\n  ';\n  end;",
+        "delimiter": "/"
+    }
+]

@@ -1,0 +1,16 @@
+{
+  "name": "odc-parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [
+    "sql",
+    "parser"
+  ],
+  "author": "xiaokang",
+  "license": "ISC",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "pnpm --filter './packages/**' build"
+  }
+}

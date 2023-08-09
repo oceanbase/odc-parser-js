@@ -1,0 +1,22 @@
+[
+    {
+        "sql": "select 1 from dual",
+        "delimiter": ";"
+    },
+    {
+        "sql": "\ncreate or replace procedure test_proc_1 (id NUMBER, agein number)\n  IS\n  name varchar2(100);\n  age number:=agein;\n  begin\n  name:='xxxxxxx';\n  dbms_output.put_line('id='||id||',name='||name||',age='||age);\n  end;",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\nselect 1 from dual",
+        "delimiter": ";"
+    },
+    {
+        "sql": "create or replace function adder(n1 in number, n2 in number)\n  return number\n  is\n  n3 number(8);\n  begin\n  n3 :=n1+n2;\n  return n3;\n  end;",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\ncreate function get_score(indata int, basedata int)\n  return int as\n      gap int;\n      score int;\n  BEGIN\n      gap := indata - basedata;\n      case gap\n      when 0 then\n          score := 100;\n      when 1 then\n          score := 90;\n      when 2 then\n          score := 70;\n      when 3 then\n          score := 50;\n      when 4 then\n          score := 30;\n      when 5 then\n          score := 10;\n      else\n          score := 0;\n      end case;i\n      return score;\n  END;",
+        "delimiter": "/"
+    }
+]

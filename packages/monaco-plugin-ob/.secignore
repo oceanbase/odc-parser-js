@@ -1,0 +1,69 @@
+##########################################################
+#            OBFlow Secret Scan Ignore List              #
+##########################################################
+# Above the segmentation lines there are suspected privacy information #
+# Please use the file name as the first line and the igored information #
+# should be started with tab. #
+# Under the segmentation lines there are the folders which you need to ignore #
+##########################################################
+**
+    odcsupport@service.alipay.com
+    https://www.oceanbase.com*
+    https://github.com/*
+    https://lodash.com*
+    https://help.aliyun.com/*
+    https://mozilla.github.io*
+    https://stackoverflow.com*
+    http://www.w3.org*
+    https://ant.design*
+    https://859452cf23044aeda8677a8bdcc53081@obc-sentry.oceanbase.com/3
+    https://electronjs.org*
+    https://www.aliyun.com*
+    https://datatracker.ietf.org/*
+    https://momentjs.com/*
+    https://developer.apple.com*
+    https://www.google.com/*
+    https://www.microsoft.com/*
+    https://support.apple.com/*
+    https://www.mozilla.org*
+    https://ur.alipay.com*
+    http://editorconfig.org*
+    https://github.com/prometheusresearch/react-grid
+    http://go.microsoft.com/fwlink/?LinkId=827846
+    https://developer.mozilla.org/*
+    https://reactjs.org*
+    https://babeljs.io*
+    https://docs.npmjs.com*
+    https://eslint.org*
+    https://www.npmjs.com*
+    https://facebook.github.io*
+    https://jestjs.io*
+    http://editorconfig.org
+    https://help.github.com*
+    https://dict.youdao.com*
+    https://res.cloudinary.com*
+    https://dev.to*
+    http://stackoverflow.com*
+
+--------------------------------------------------------
+# Should use GLOB wildcard to config and analysis the ignored folder
+# The root patch should start with '/'
+/docs/**
+/*.md
+/*.yml
+/libraries/**
+/.npmrc
+/yarn.lock
+/node_modules/**
+/src/.umi/**
+/.vscode/**
+/package.json
+/.git/**
+
+--------------------------------------------------------
+# Config the ignored fold to escape the Chinese scan by GLOB wildcard
+--------------------------------------------------------
+# Set md5 of pemFile string to filter
+# This section must be end up with '--------------------------------------------------------'!!!
+
+--------------------------------------------------------

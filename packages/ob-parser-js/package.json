@@ -1,0 +1,39 @@
+{
+  "name": "@oceanbase-odc/ob-parser-js",
+  "version": "2.0.7",
+  "description": "OB 前端解析工具库",
+  "main": "./lib/index.js",
+  "module": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "scripts": {
+    "build": "run-p build:*",
+    "build:cjs": "tsc -p tsconfig.json --module commonjs --outDir lib",
+    "build:esm": "tsc -p tsconfig.json --module ESNext --outDir esm",
+    "ci": "tsc && npm run cov",
+    "tsc-check": "tsc --noEmit",
+    "cov": "jest --coverage",
+    "prepublishOnly": "npm run build && npm run test",
+    "test": "jest"
+  },
+  "dependencies": {
+    "antlr4": "~4.8.0",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "@types/antlr4": "~4.7.2",
+    "@types/jest": "^25.0.0",
+    "@types/lodash": "^4.14.166",
+    "jest": "^25.0.0",
+    "npm-run-all": "^4.1.5",
+    "ts-jest": "^25.0.0",
+    "typescript": "^4.0.0",
+    "vscode-languageserver-protocol": "^3.15.3",
+    "vscode-languageserver-types": "^3.16.0"
+  },
+  "ci": {
+    "coverage": true,
+    "type": "aci"
+  },
+  "author": "xxk268858 <xxk268858@antgroup.com>",
+  "license": "MIT"
+}

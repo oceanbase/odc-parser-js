@@ -1,0 +1,63 @@
+{
+  "name": "@oceanbase-odc/monaco-plugin-ob",
+  "version": "0.0.21",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server -c ./example/config/webpack.config.js",
+    "dev-worker": "webpack-dev-server -c ./build/webpack.config.js",
+    "buildWorker": "webpack -c ./build/webpack.config.prod.js",
+    "buildExample": "webpack -c ./example/config/webpack.config.prod.js",
+    "build": "tsc && npm run buildWorker",
+    "watch": "tsc -w"
+  },
+  "keywords": [
+    "Monaco",
+    "OceanBase",
+    "OB",
+    "SQL",
+    "Oracle",
+    "MySQL"
+  ],
+  "author": "xiaokang",
+  "license": "ISC",
+  "dependencies": {
+    "@oceanbase-odc/ob-parser-js": "workspace:^2",
+    "antlr4": "~4.8.0",
+    "comlink": "^4.3.1"
+  },
+  "files": [
+    "dist",
+    "worker-dist",
+    "package.json",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "@types/antlr4": "~4.7.2",
+    "@types/react": "^17.0.52",
+    "@types/react-dom": "^17.0.18",
+    "ahooks": "^3.7.2",
+    "babel-loader": "^9.0.1",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "monaco-vim": "^0.3.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.4",
+    "webpack": "^5.77.0",
+    "webpack-bundle-analyzer": "^4.7.0",
+    "webpack-cli": "^4.10.0",
+    "monaco-editor": "^0.34.1",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "peerDependencies": {
+    "monaco-editor": "^0.34.1"
+  }
+}

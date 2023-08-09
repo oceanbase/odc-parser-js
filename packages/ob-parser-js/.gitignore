@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+coverage/
+dist
+.DS_Store
+.nyc_output
+.basement
+package-lock.json
+*bak
+.idea/
+.vscode/
+esm/
+lib/
+.antlr/

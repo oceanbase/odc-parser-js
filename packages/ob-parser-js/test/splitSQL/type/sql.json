@@ -1,0 +1,10 @@
+[
+    {
+        "sql": "CREATE TYPE data_typ1 AS OBJECT\n  ( year NUMBER,\n  MEMBER FUNCTION prod(invent NUMBER) RETURN NUMBER\n  );",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\nCREATE TYPE BODY data_typ1 IS\n  MEMBER FUNCTION prod (invent NUMBER) RETURN NUMBER IS\n  BEGIN\n  RETURN (year + invent);\n  END;\n  END;",
+        "delimiter": "/"
+    }
+]

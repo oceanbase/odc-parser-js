@@ -1,0 +1,6 @@
+[
+    {
+        "sql": "DECLARE\n  -- Local variables here\n  i NUMBER;\nBEGIN\n  -- Test statements here\n  dbms_output.put_line('Hello World!');\nEND;",
+        "delimiter": ""
+    }
+]

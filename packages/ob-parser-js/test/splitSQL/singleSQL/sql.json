@@ -1,0 +1,6 @@
+[
+    {
+        "sql": "select * from a",
+        "delimiter": ";"
+    }
+]

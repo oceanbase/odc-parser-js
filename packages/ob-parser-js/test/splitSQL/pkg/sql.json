@@ -1,0 +1,18 @@
+[
+    {
+        "sql": "CREATE OR REPLACE PACKAGE my_pack IS\n    FUNCTION get_id RETURN NUMBER;\n  END my_pack;\n  ",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\nCREATE OR REPLACE PACKAGE BODY my_pack\n  IS\n    id NUMBER := 1;\n    len NUMBER := 10;\n    FUNCTION get_id RETURN NUMBER AS\n    BEGIN\n      RETURN id;\n    END;\n  BEGIN\n    len := 20;\n    id := 10;\n    INSERT INTO result VALUES('call init package');\n    update OC_USER_OPERATION_EXECUTE set status = 2, exec_status = 2, response_time = sysdate, request_time = sysdate + 2/24/60/60, error_code = 10035;\n  END my_pack;\n  ",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\ncreate or replace package Test_Package_Func_Proc\n  as\n   function  test_func  (in_val in number) return number;\n   procedure test_proc (in_val in number);\n  end;\n  ",
+        "delimiter": "/"
+    },
+    {
+        "sql": "\ncreate or replace package body Test_Package_Func_Proc\n  as\n  function test_func (in_val in number) return number\n  is\n  begin\n  return in_val;\n  exception\n  when others then\n  RAISE;\n  end;\n  procedure test_proc  (in_val in number)\n  is\n  begin\n  dbms_output.put_line (in_val);\n  exception\n  when others then\n  RAISE;\n  end;\n  end;",
+        "delimiter": ""
+    }
+]

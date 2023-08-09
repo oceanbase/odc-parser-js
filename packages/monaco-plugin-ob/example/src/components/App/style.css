@@ -1,0 +1,39 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.app {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+}
+
+.editor {
+    flex: 1;
+    width: 500px;
+    border: 1px solid #cdcdcd;
+}
+
+.editorbox {
+    height: 100%;
+    width: 500px;
+    border: 1px solid #cdcdcd;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    padding: 20px;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+button {
+    margin: 5px;
+    padding: 2px;
+}

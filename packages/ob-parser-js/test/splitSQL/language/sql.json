@@ -1,0 +1,10 @@
+[
+    {
+        "sql": "CREATE OR REPLACE FUNCTION Interp_func (\n  /* Find the value of y at x degrees using Lagrange interpolation: */\n     x    IN FLOAT,\n     y    IN FLOAT)\n  RETURN FLOAT AS\n     LANGUAGE C\n     NAME \"Interp_func\"\n     LIBRARY MathLib;",
+        "delimiter": "/"
+    },
+     {
+         "sql": "\nCREATE OR REPLACE PROCEDURE findRoot_proc (\n     x IN REAL)\n  AS LANGUAGE C\n     LIBRARY c_utils\n     NAME \"C_findRoot\"\n     PARAMETERS (\n        x BY REFERENCE);",
+         "delimiter": "/"
+     }
+]
