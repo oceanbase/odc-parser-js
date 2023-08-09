@@ -1,6 +1,6 @@
 # ODC-Parser-JS
 
-ODC-Parser-JS provides a JavaScript version of SQL Parser along with a ready-to-use Monaco Plugin. It currently supports OceanBase MySQL and OceanBase Oracle SQL dialect. 
+ODC-Parser-JS provides a JavaScript version of SQL Parser along with a Out-of-the-box Monaco Plugin. It currently supports OceanBase MySQL and OceanBase Oracle SQL dialect. 
 ![Demo](docs/images/demo.png)
 ## Features
 
