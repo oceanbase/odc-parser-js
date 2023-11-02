@@ -116,6 +116,7 @@ const words: string[] = [
   "VALIDATE",
   "VALUES",
   "VARCHAR2",
+  "VARCHAR",
   "VARCHARACTER",
   "VIEW",
   "WHENEVER",
