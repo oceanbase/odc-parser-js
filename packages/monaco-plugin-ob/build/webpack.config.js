@@ -5,7 +5,8 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        mysql: path.resolve(__dirname, '../dist/obmysql/worker/index'),
+        obmysql: path.resolve(__dirname, '../dist/obmysql/worker/index'),
+        mysql: path.resolve(__dirname, '../dist/mysql/worker/index'),
         oracle: path.resolve(__dirname, '../dist/oboracle/worker/index')
     },
     resolve: {

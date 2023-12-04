@@ -1,6 +1,7 @@
 export enum LanguageType {
     OB_MySQL = 'obmysql',
-    OB_Oracle = 'oboracle'
+    OB_Oracle = 'oboracle',
+    MySQL = 'mysql',
 }
 
 export interface IFunction {

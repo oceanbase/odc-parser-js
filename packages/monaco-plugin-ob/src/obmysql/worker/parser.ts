@@ -1,11 +1,12 @@
 import { Token as Antlr4Token, InputStream, CommonTokenStream,  } from 'antlr4';
 // @ts-ignore
-import { MysqlLexer as MySQLLexer, SQLType, SQLDocument } from '@oceanbase-odc/ob-parser-js';
+import { SQLType, SQLDocument } from '@oceanbase-odc/ob-parser-js';
+import { PLLexer as MySQLLexer } from "@oceanbase-odc/ob-parser-js/esm/parser/obmysql/PLLexer"
 import { Token } from '../../types';
 import { AutoCompletionItems } from '../../types/autoCompletion';
 import { getTableContextFromMap } from '../../model/helper';
 import { Query, QueryCursorContext } from '../../model/query';
-import { createFromASTTree } from '../../model/dialect/mysql';
+import { createFromASTTree } from '../../model/dialect/obmysql';
 import { keywords } from '../keywords';
 
 const keywordsSet = new Set(keywords)
@@ -32,7 +33,7 @@ function getSQLDocument(sql: string, delimiter: string) {
   }
   const sqlDocument = new SQLDocument({
     text: sql,
-    type: SQLType.MySQL,
+    type: SQLType.OBMySQL,
     delimiter
   })
   const tokenSize = sqlDocument?.statements?.reduce((acc, cur) => (cur?.tokens?.length || 0) + acc, 0) || 0;
@@ -118,7 +119,7 @@ export default {
   getOffsetLeftTokens(text: string, delimiter: string, offset: number): Token[] {
     const sqlDocuments = new SQLDocument({
       text,
-      type: SQLType.MySQL,
+      type: SQLType.OBMySQL,
       delimiter
     });
     let statement = sqlDocuments.statements.find(s => s.start <= offset && s.stop >= offset);
@@ -166,13 +167,13 @@ export default {
         const newText = statement.text.substring(0, offset - 1) + ' ' + statement.text.substring(offset);
         statement = getSQLDocument(newText, delimiter).statements?.[0];
       }
-      const result = statement.parser.parse(offset, function (_tokens, _currentRules, _followRules, _tokenStack) {
+      const result = statement.parse(offset, function (_tokens, _currentRules, _followRules, _tokenStack) {
         tokens = _tokens;
         currentRules = _currentRules;
         followRules = _followRules;
         tokenStack = _tokenStack;
       });
-
+      console.log(result)
       if (isDot) {
         /**
          * 假如是对象访问符，先确定是否为query里的

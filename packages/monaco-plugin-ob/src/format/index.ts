@@ -6,9 +6,14 @@ import { PLugin } from '../Plugin';
 
 
 function format(text: string, type: LanguageType, delimiter: string) {
+  const map = {
+    [LanguageType.OB_MySQL]: SQLType.OBMySQL,
+    [LanguageType.MySQL]: SQLType.MySQL,
+    [LanguageType.OB_Oracle]: SQLType.Oracle
+  }
   const formatted: string = plugins.format({
     sql: text,
-    type: type === LanguageType.OB_MySQL ? SQLType.MySQL : SQLType.Oracle,
+    type: map[type],
     delimiter
   });
 

@@ -1,25 +1,8 @@
 export interface OBParser {
-    split(): IStatement[];
-    getFormatText?(): string | null;
-    getAllFromTable?(): {
-        tables: {
-            alias: string;
-            schema: string;
-            schemaLocation: INodeLocation;
-            name: string;
-            nameLocation: INodeLocation;
-            location: INodeLocation;
-        }[];
-        tableVariables: {
-            schema: string;
-            schemaLocation: INodeLocation;
-            name: string;
-            nameLocation: INodeLocation;
-            location: INodeLocation;
-            column: string;
-            columnLocation: INodeLocation;
-        }[]
-    }
+    split(input: string, delimiter: string): IStatement[];
+    getFormatText(input: string): string | null;
+    parse(input: string, offset?: number, completionCallback?: (tokens: string[], currentRules: string[], followRules: string[]) => void): any;
+    
 }
 
 export interface INodeLocation {
@@ -31,7 +14,8 @@ export interface INodeLocation {
 }
 export enum SQLType {
     MySQL,
-    Oracle
+    Oracle,
+    OBMySQL
 }
 
 export interface IStatement {

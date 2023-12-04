@@ -130,6 +130,9 @@ export default function () {
             }}>oracle</button>
             <button onClick={() => {
                 model && monaco.editor.setModelLanguage(model, 'obmysql')
+            }}>obmysql</button>
+            <button onClick={() => {
+                model && monaco.editor.setModelLanguage(model, 'mysql')
             }}>mysql</button>
             <button onClick={() => { addVim() }}>open vim mode</button>
             <button onClick={() => { removeVim() }}>remove vim</button>

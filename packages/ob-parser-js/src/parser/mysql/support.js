@@ -60,7 +60,7 @@ module.exports = {
                         completionCallback(...args, tokenStack)
                     });
                     console.timeEnd('completion')
-                    console.log('current offset', symbol, lexer.offset, currentyy.input.slice(0, lexer.offset) + '|' + currentyy.input.slice(lexer.offset))
+                    // console.log('current offset', symbol, lexer.offset, currentyy.input.slice(0, lexer.offset) + '|' + currentyy.input.slice(lexer.offset))
                 }
             }
             let result;

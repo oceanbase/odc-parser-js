@@ -1,9 +1,8 @@
 import { Token as Antlr4Token, InputStream, CommonTokenStream, } from 'antlr4';
-import { PlSqlLexer, SQLType } from '@oceanbase-odc/ob-parser-js';
-import { SQLDocument } from '@oceanbase-odc/ob-parser-js';
+import { SQLType, SQLDocument } from '@oceanbase-odc/ob-parser-js';
+import { PlSqlLexer } from '@oceanbase-odc/ob-parser-js/esm/parser/oracle/PlSqlLexer';
 import { Token } from '../../types';
 import { IFromTable, ITableVariable } from './type';
-import unReservedWords from '../keywords/unreserved';
 import { keywords, PLKeywords } from '../keywords';
 import { createFromASTTree } from '../../model/dialect/oracle';
 import { Query, QueryCursorContext } from '../../model/query';
@@ -182,7 +181,7 @@ export default {
         const newText = statement.text.substring(0, offset - 1) + ' ' + statement.text.substring(offset);
         statement = getSQLDocument(newText, delimiter).statements?.[0];
       }
-      const result = statement.parser.parse(offset, function (_tokens, _currentRules, _followRules, _tokenStack) {
+      const result = statement.parse(offset, function (_tokens, _currentRules, _followRules, _tokenStack) {
         tokens = _tokens;
         currentRules = _currentRules;
         followRules = _followRules;
@@ -353,7 +352,7 @@ export default {
     let completions: string[] = [];
     const statementOffset = offset - statement.start;
     let tokens, currentRules, followRules;
-    const result = statement.parser.parse(statementOffset, function (_tokens, _currentRules, _followRules) {
+    const result = statement.parse(statementOffset, function (_tokens, _currentRules, _followRules) {
       tokens = _tokens;
       currentRules = _currentRules;
       followRules = _followRules;

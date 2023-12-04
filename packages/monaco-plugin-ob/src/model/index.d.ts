@@ -25,6 +25,7 @@ export interface IFromTable {
     query?: Query;
     location: ILocation;
     join?: IFromTable;
+    joins?: IFromTable[];
 }
 
 export interface IWithTable {

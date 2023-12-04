@@ -1,6 +1,9 @@
-import { MySQLParser, OracleParser } from '../parser';
 import { OBParser, SQLType } from '../parser/type';
 import SQLStatement from './SQLStatement';
+
+import MySQLParser from '../parser/mysql';
+import OracleParser from '../parser/oracle';
+import OBMySQLParser from '../parser/obmysql';
 
 const defaultOptions = {
     type: SQLType.Oracle,
@@ -24,11 +27,11 @@ class SQLDocument {
         this.type = options.type;
         this.delimiter = options.delimiter || ';';
         const ParserClass = this.getParserClass();
-        this.parser = new ParserClass(this.text, { delimiter: this.delimiter });
+        this.parser = new ParserClass(false);
         this.split();
     }
     private split() {
-        const sqls = this.parser.split();
+        const sqls = this.parser.split(this.text, this.delimiter);
         this.statements = sqls?.map((sqlObj) => {
             const Parser = this.getParserClass();
             return new SQLStatement({
@@ -39,23 +42,28 @@ class SQLDocument {
                 startColumn: sqlObj.startColumn,
                 endLineNumber: sqlObj.endLineNumber,
                 endColumn: sqlObj.endColumn,
-                parser: new Parser(sqlObj.text, { delimiter: sqlObj.delimiter, isPL: sqlObj.isPL }),
-                isPL: sqlObj.isPL,
-                isDelimiterStmt: sqlObj.isDelimiter,
+                parser: new Parser(!!sqlObj.isPL),
+                isPL: !!sqlObj.isPL,
+                isDelimiterStmt: !!sqlObj.isDelimiter,
                 delimiter: sqlObj.delimiter,
                 tokens: sqlObj.tokens
             })
         });
     }
     private getParserClass() {
-        if (this.type == SQLType.MySQL) {
-            return MySQLParser;
-        } else {
-            return OracleParser
+        switch(this.type) {
+            case SQLType.MySQL: {
+                return MySQLParser
+            }
+            case SQLType.Oracle: {
+                return OracleParser;
+            }
+            case SQLType.OBMySQL: {
+                return OBMySQLParser
+            }
         }
     }
     public getFormatText() {
-        const delimiter = this.delimiter;
         return this.statements.map((stmt) => {
             return stmt.getFormatText() + (stmt.isDelimiter ? '' : stmt.delimiter)
         }).join('\n')

@@ -45,6 +45,9 @@ class SQLStatement {
             this.isDelimiter = true;
         }
     }
+    parse(...args) {
+        return this.parser.parse(this.text, ...args);
+    }
     getFormatText() {
         if (this.isDelimiterStmt) {
             return this.text;
@@ -54,33 +57,10 @@ class SQLStatement {
              */
             return this.text;
         }
-        return this.parser.getFormatText() || this.text;
+        return this.parser.getFormatText(this.text) || this.text;
     }
     getAllFromTable() {
-        let res = this.parser.getAllFromTable();
-        if (res) {
-            const { tables, tableVariables } = res;
-            res.tables = tables.map(table => {
-                const { location, schemaLocation, nameLocation } = table;
-                return {
-                    ...table,
-                    location: this.convertLocation(location),
-                    schemaLocation: this.convertLocation(schemaLocation),
-                    nameLocation: this.convertLocation(nameLocation)
-                }
-            })
-            res.tableVariables = tableVariables.map(table => {
-                const { location, schemaLocation, nameLocation, columnLocation } = table;
-                return {
-                    ...table,
-                    location: this.convertLocation(location),
-                    schemaLocation: this.convertLocation(schemaLocation),
-                    nameLocation: this.convertLocation(nameLocation),
-                    columnLocation: this.convertLocation(columnLocation)
-                }
-            })
-        }
-        return res;
+        return [];
     }
     private convertLocation (location: INodeLocation): INodeLocation {
         if (!location) {

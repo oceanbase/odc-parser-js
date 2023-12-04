@@ -1,6 +1,6 @@
 {
   "name": "@oceanbase-odc/monaco-plugin-ob",
-  "version": "0.0.24",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -27,7 +27,7 @@
   "author": "xiaokang",
   "license": "ISC",
   "dependencies": {
-    "@oceanbase-odc/ob-parser-js": "workspace:^2",
+    "@oceanbase-odc/ob-parser-js": "workspace:^3",
     "antlr4": "~4.8.0",
     "comlink": "^4.3.1"
   },
