@@ -111,9 +111,9 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                     const arr = objectName.split('.');
                     let tableName = arr.length > 1 ? arr[1] : arr[0];
                     let schemaName = arr.length > 1 ? arr[0] : undefined;
-                    const columns = await modelOptions?.getTableColumns?.(tableName, schemaName);
-                    if (columns?.length) {
-                        suggestions = suggestions.concat(await this.getColumnList(model, item, range));
+                    const columnSuggestions = await this.getColumnList(model, { tableName, schemaName }, range);
+                    if (columnSuggestions?.length) {
+                        suggestions = suggestions.concat(columnSuggestions);
                     }
                 } else if (item.type === 'fromTable') {
                     suggestions.push(tableItem(item.tableName, item.schemaName, true, range))
