@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRef, useEffect } from "react";
 import { useUpdate } from 'ahooks';
 import * as monaco from 'monaco-editor';
@@ -13,6 +13,7 @@ export default function () {
     const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
     const dom = useRef<HTMLDivElement | null>(null);
     const vim = useRef<any>();
+    const [theme, setTheme] = useState<string>("obwhite");
     const update = useUpdate()
     const editorIns = editor.current;
     const model = editorIns?.getModel();
@@ -27,10 +28,18 @@ export default function () {
     }
 
     useEffect(() => {
+        if (theme && editorIns) {
+            editorIns.updateOptions({
+                theme
+            })
+        }
+    }, [theme])
+
+    useEffect(() => {
         if (dom.current) {
             editor.current = monaco.editor.create(dom.current, {
                 language: 'obmysql',
-                theme: 'obwhite',
+                theme: theme,
                 wordBasedSuggestions: false
             });
             const model = editor.current.getModel()?.id;
@@ -134,6 +143,12 @@ export default function () {
             <button onClick={() => {
                 model && monaco.editor.setModelLanguage(model, 'mysql')
             }}>mysql</button>
+             <button onClick={() => {
+                setTheme("obwhite")
+            }}>theme: white</button>
+             <button onClick={() => {
+                setTheme("obdark")
+            }}>theme: dark</button>
             <button onClick={() => { addVim() }}>open vim mode</button>
             <button onClick={() => { removeVim() }}>remove vim</button>
             <div>

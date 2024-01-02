@@ -15,7 +15,9 @@ export class PLugin {
         setupOracle(this);
         setupMySQL(this);
         setupOBMySQL(this);
-        monaco.editor.defineTheme('obwhite', theme)
+        theme.forEach(item => {
+            monaco.editor.defineTheme(item.key, item.config)
+        })
     }
 
     public setModelOptions(modelId: string, modelOptions: IModelOptions | null) {
