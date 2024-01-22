@@ -50,7 +50,10 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
     async getColumnList(model, item, range) {
         let modelOptions = this.getModelOptions(model.id);
         const suggestions: monaco.languages.CompletionItem[] = [];
-        const columns = await modelOptions?.getTableColumns?.(item.tableName, item.schemaName);
+        let columns = await modelOptions?.getTableColumns?.(item.tableName, item.schemaName);
+        if (!columns?.length && !item.schemaName) {
+            columns = await modelOptions?.getTableColumns?.(item.tableName, 'sys');
+        }
         if (columns) {
             columns.forEach(column => {
                 suggestions.push(tableColumnItem(column.columnName, item.tableName, item.schemaName, range))
