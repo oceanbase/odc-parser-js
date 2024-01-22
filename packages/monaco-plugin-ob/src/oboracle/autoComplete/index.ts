@@ -101,7 +101,13 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                 if (typeof item === 'string') {
                     suggestions.push(keywordItem(item, range))
                 } else if (item.type === 'allTables') {
-                    suggestions = suggestions.concat(await this.getTableList(model, item.schema, range))
+                    suggestions = suggestions.concat(await this.getTableList(model, item.schema, range));
+                    if (!item.schema) {
+                        /**
+                         * add oracle sys public views
+                         */
+                        suggestions = suggestions.concat(await this.getTableList(model, 'sys', range));
+                    }
                 } else if (item.type === 'tableColumns') {
                     suggestions = suggestions.concat(await this.getColumnList(model, item, range));
                 } else if (item.type === 'withTable') {
