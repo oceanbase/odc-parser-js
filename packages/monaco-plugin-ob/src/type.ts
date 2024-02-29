@@ -12,6 +12,12 @@ export interface IFunction {
     body?: string;
 }
 
+export interface ISnippet {
+    label: string;
+    documentation: string;
+    insertText: string;
+}
+
 export interface IFunctionParamRich {
     name: string;
     desc?: string;
@@ -32,4 +38,5 @@ export interface IModelOptions {
     getTableColumns?: (tableName: string, dbName?: string) => Promise<{ columnName: string; columnType: string; }[]>;
     getTableDDL?: (tableName: string, dbName?: string) => Promise<string>;
     getSchemaInfo?: (dbName?: string) => Promise<string>;
+    getSnippets?: () => Promise<ISnippet[]>;
 }

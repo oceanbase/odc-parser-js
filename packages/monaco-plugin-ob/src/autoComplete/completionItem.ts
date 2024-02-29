@@ -1,6 +1,6 @@
 
 import * as monaco from 'monaco-editor';
-import { IFunction } from '../type';
+import { IFunction, ISnippet } from '../type';
 
 export function keywordItem(keyword: string, range: monaco.languages.CompletionItemRanges | monaco.IRange): monaco.languages.CompletionItem {
     return {
@@ -39,6 +39,17 @@ export function functionItem(func: IFunction, range: monaco.languages.Completion
         kind: monaco.languages.CompletionItemKind.Function,
         documentation: `${func.name}(${paramsDocument})`,
         insertText: `${func.name}(${params})`,
+        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        range
+    }
+}
+
+export function snippetItem(s: ISnippet, range: monaco.languages.CompletionItemRanges | monaco.IRange) {
+    return {
+        label: s.label,
+        kind: monaco.languages.CompletionItemKind.Snippet,
+        documentation: s.documentation,
+        insertText: s.insertText,
         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
         range
     }

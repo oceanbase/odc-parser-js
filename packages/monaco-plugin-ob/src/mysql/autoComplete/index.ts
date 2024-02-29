@@ -1,5 +1,5 @@
 import * as monaco from 'monaco-editor';
-import { functionItem, keywordItem, schemaItem, tableColumnItem, tableItem } from '../../autoComplete/completionItem';
+import { functionItem, keywordItem, schemaItem, snippetItem, tableColumnItem, tableItem } from '../../autoComplete/completionItem';
 import { PLugin } from '../../Plugin';
 import { AutoCompletionItems } from '../../types/autoCompletion';
 import functions from '../functions';
@@ -83,6 +83,14 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
         })
     }
 
+    async getSnippets(model, range) {
+        let modelOptions = this.getModelOptions(model.id);
+        const snippets  = await modelOptions?.getSnippets?.();
+        return (snippets || []).map(s => {
+            return snippetItem(s, range)
+        })
+    }
+
     async getCompleteWordFromOffset(offset: number, input: string, delimiter: string, range: monaco.IRange, model: monaco.editor.ITextModel, triggerCharacter?: string): Promise<monaco.languages.CompletionList> {
         const parser = worker.parser;
         const result: AutoCompletionItems = await parser.getAutoCompletion(input, delimiter, offset)
@@ -121,6 +129,9 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                     suggestions = suggestions.concat(await this.getFunctions(model, range))
                 }
             }
+            suggestions = suggestions.concat(
+                await this.getSnippets(model, range)
+            )
             return {
                 suggestions,
                 incomplete: false
