@@ -2279,6 +2279,9 @@ APPROXIMATE_NUM_LIT: FLOAT_FRAGMENT ('E' ('+'|'-')? (FLOAT_FRAGMENT | [0-9]+))? 
 // and a superfluous subtoken typecasting of the "QUOTE"
 CHAR_STRING: '\''  (~('\'' | '\r' | '\n') | '\'' '\'' | NEWLINE)* '\'';
 
+// do not use, only for sql split
+MYSQL_CHAR_STRING: '`'  (~('`' | '\r' | '\n') | '`' '`' | NEWLINE)* '`';
+
 // See https://livesql.oracle.com/apex/livesql/file/content_CIREYU9EA54EOKQ7LAMZKRF6P.html
 // TODO: context sensitive string quotes (any characted after quote)
 CHAR_STRING_PERL    : 'Q' '\'' (QS_ANGLE | QS_BRACE | QS_BRACK | QS_PAREN | QS_EXCLAM | QS_SHARP | QS_QUOTE | QS_DQUOTE) '\'' -> type(CHAR_STRING);
