@@ -1,11 +1,11 @@
 import * as monaco from 'monaco-editor';
 
-import { plugins, SQLType } from '@oceanbase-odc/ob-parser-js';
 import { LanguageType } from '../type';
 import { PLugin } from '../Plugin';
 
 
-function format(text: string, type: LanguageType, delimiter: string) {
+async function format(text: string, type: LanguageType, delimiter: string) {
+  const { SQLType, plugins } = await import('@oceanbase-odc/ob-parser-js');
   const map = {
     [LanguageType.OB_MySQL]: SQLType.OBMySQL,
     [LanguageType.MySQL]: SQLType.MySQL,
@@ -30,13 +30,16 @@ export class DocumentFormattingEditProvider implements monaco.languages.Document
   provideDocumentFormattingEdits(model: monaco.editor.ITextModel, options: monaco.languages.FormattingOptions, token: monaco.CancellationToken): monaco.languages.ProviderResult<monaco.languages.TextEdit[]> {
     const text: string = model.getValue();
     const range: monaco.Range = model.getFullModelRange();
-
-    return [
-      {
-        range,
-        text: format(text, this.type, this.plugin?.modelOptionsMap.get(model.id)?.delimiter || ';')
-      }
-    ]
+    
+    return new Promise(async (resolve) => {
+      const formatMsg = await format(text, this.type, this.plugin?.modelOptionsMap.get(model.id)?.delimiter || ';')
+       resolve([
+        {
+          range,
+          text:formatMsg
+        }
+      ])
+    }) 
   }
 }
 
@@ -49,12 +52,14 @@ export class DocumentRangeFormattingEditProvider implements monaco.languages.Doc
   }
   provideDocumentRangeFormattingEdits(model: monaco.editor.ITextModel, range: monaco.Range, options: monaco.languages.FormattingOptions, token: monaco.CancellationToken): monaco.languages.ProviderResult<monaco.languages.TextEdit[]> {
     const text: string = model.getValueInRange(range);
-
-    return [
-      {
-        range,
-        text: format(text, this.type, this.plugin?.modelOptionsMap.get(model.id)?.delimiter || ';')
-      }
-    ]
+    return new Promise(async (resolve) => {
+      const formatMsg = await format(text, this.type, this.plugin?.modelOptionsMap.get(model.id)?.delimiter || ';')
+      return [
+        {
+          range,
+          text: formatMsg
+        }
+      ]
+    })
   }
 }

@@ -1,7 +1,6 @@
 const path = require('path');
 
 
-
 module.exports = {
     entry: {
         obmysql: path.resolve(__dirname, '../dist/obmysql/worker/index'),
@@ -15,6 +14,10 @@ module.exports = {
             module: false
         }
     },
+    optimization: {
+        splitChunks: false
+    },
+    target: "webworker",
     output: {
         path: path.resolve(__dirname, '../worker-dist')
     },
