@@ -1,7 +1,4 @@
 import * as monaco from 'monaco-editor';
-import { setup as setupOBMySQL } from './obmysql';
-import { setup as setupOracle } from './oboracle';
-import { setup as setupMySQL } from './mysql';
 import theme from './theme';
 import { IModelOptions } from './type';
 
@@ -15,15 +12,21 @@ export class PLugin {
         features.forEach(item => {
             switch (item) {
                 case "mysql": {
-                    setupMySQL(this);
+                    import('./mysql').then(module => {
+                        module.setup(this);
+                    })
                     break;
                 }
                 case "obmysql": {
-                    setupOBMySQL(this);
+                    import('./obmysql').then(module => {
+                        module.setup(this);
+                    })
                     break;
                 }
                 case "oboracle": {
-                    setupOracle(this);
+                    import('./oboracle').then(module => {
+                        module.setup(this);
+                    })
                     break;
                 }
             }
