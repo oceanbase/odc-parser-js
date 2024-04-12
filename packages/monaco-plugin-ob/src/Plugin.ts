@@ -11,10 +11,23 @@ export class PLugin {
     
     modelOptionsMap: Map<string, IModelOptions | null> = new Map();
 
-    public setup() {
-        setupOracle(this);
-        setupMySQL(this);
-        setupOBMySQL(this);
+    public setup(features: ("mysql" | "obmysql" | "oboracle")[] = ["mysql", "obmysql", "oboracle"]) {
+        features.forEach(item => {
+            switch (item) {
+                case "mysql": {
+                    setupMySQL(this);
+                    break;
+                }
+                case "obmysql": {
+                    setupOBMySQL(this);
+                    break;
+                }
+                case "oboracle": {
+                    setupOracle(this);
+                    break;
+                }
+            }
+        })
         theme.forEach(item => {
             monaco.editor.defineTheme(item.key, item.config)
         })
