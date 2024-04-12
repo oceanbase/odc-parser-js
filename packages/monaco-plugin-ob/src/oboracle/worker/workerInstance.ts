@@ -1,8 +1,7 @@
 import * as Comlink from 'comlink';
 import { CorsWorker as Worker } from '../../corsWorker';
-import { IWorker } from './type';
     //@ts-ignore
-const corsWorker = new Worker(new URL(/* webpackChunkName: 'oboracle.worker' */'../../../worker-dist/oracle.js', import.meta.url));
+const corsWorker = new Worker(window.obMonaco.getWorkerUrl('oboracle'));
 
 const wrapWorker = Comlink.wrap<any>(
 

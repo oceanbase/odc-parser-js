@@ -1,8 +1,7 @@
 import * as Comlink from 'comlink';
 import { CorsWorker as Worker } from '../../corsWorker';
-import { IWorker } from './type';
     //@ts-ignore
-const corsWorker = new Worker(new URL(/* webpackChunkName: 'mysql.worker' */'../../../worker-dist/mysql.js', import.meta.url));
+const corsWorker = new Worker(window.obMonaco.getWorkerUrl('mysql'));
 
 const wrapWorker = Comlink.wrap<any>(
 

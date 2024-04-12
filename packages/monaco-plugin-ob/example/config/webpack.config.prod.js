@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyPlugin = require('copy-webpack-plugin');
 
 
 
@@ -46,7 +47,12 @@ module.exports = {
         new HtmlWebPackPlugin({
             template:path.resolve(__dirname, '../src/index.html')
         }),
-        new BundleAnalyzerPlugin()
+        new BundleAnalyzerPlugin(),
+        new CopyPlugin({
+            patterns: [
+              { from: process.cwd() + '/worker-dist/', to: 'ob-workers' },
+            ],
+          }),
     ],
     mode: 'production',
 };

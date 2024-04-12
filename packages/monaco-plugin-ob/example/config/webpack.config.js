@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: path.resolve(__dirname, '../src/index.tsx'),
@@ -38,7 +38,12 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-        })
+        }),
+        new CopyPlugin({
+            patterns: [
+              { from: process.cwd() + '/worker-dist/', to: 'ob-workers' },
+            ],
+          }),
     ],
     devServer: {
         hot: true

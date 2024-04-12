@@ -3,11 +3,35 @@ import { useRef, useEffect } from "react";
 import { useUpdate } from 'ahooks';
 import * as monaco from 'monaco-editor';
 import { initVimMode } from 'monaco-vim';
-import Plugin from '../../../../dist/index';
 import './style.css';
 
-const plugin = new Plugin();
-plugin.setup();
+window.obMonaco = {
+    getWorkerUrl: (type: string) => {
+        switch (type) {
+            case 'mysql': {
+                return 'ob-workers/mysql.js'
+            }
+            case 'obmysql': {
+                return 'ob-workers/obmysql.js'
+            }
+            case 'oboracle': {
+                return 'ob-workers/oracle.js'
+            }
+        }
+    }
+}
+let plugin: any;
+async function initPlugin() {
+    import('../../../../dist/index').then(module => {
+        const Plugin = module.default;
+         plugin = new Plugin();
+        plugin.setup();
+    })
+}
+
+initPlugin();
+
+
 export default function () {
 
     const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
