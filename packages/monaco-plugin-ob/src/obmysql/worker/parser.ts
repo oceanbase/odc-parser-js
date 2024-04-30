@@ -268,6 +268,7 @@ export default {
           }
         }
       }
+      console.log(tokens);
       tokens = tokens?.filter(token => keywordsSet.has(token));
       if (tokens) {
         completions = tokens.map(token => convertMap[token] || token);

@@ -2,12 +2,24 @@
 import * as monaco from 'monaco-editor';
 import { IFunction, ISnippet } from '../type';
 
+export enum CompletionItemSort{
+    Star = "37",
+    Keyword = '50',
+    Table = '39',
+    Column = '38',
+    Function = '51',
+    Schema = '40',
+    Snippet = '52'
+}
+
 export function keywordItem(keyword: string, range: monaco.languages.CompletionItemRanges | monaco.IRange): monaco.languages.CompletionItem {
     return {
         label: keyword,
         range,
-        insertText: keyword,
-        kind: monaco.languages.CompletionItemKind.Keyword
+        insertText: keyword + ' ',
+        kind: monaco.languages.CompletionItemKind.Keyword,
+        command: {id: 'editor.action.triggerSuggest', title: "" },
+        sortText: keyword === "*" ? CompletionItemSort.Star :  CompletionItemSort.Keyword
     }
 }
 
@@ -17,7 +29,8 @@ export function tableItem(tableName: string, schemaName: string = '', insertSche
         label: { label: name, description: 'Table', detail: ' ' + schemaName },
         range,
         insertText: name,
-        kind: monaco.languages.CompletionItemKind.Class
+        kind: monaco.languages.CompletionItemKind.Class,
+        sortText: CompletionItemSort.Table
     }
 }
 
@@ -26,8 +39,10 @@ export function tableColumnItem(columnName: string, tableName: string, schemaNam
     return {
         label: { label: columnName, description: 'Column', detail: ' ' + tableFullName },
         range,
-        insertText: columnName,
-        kind: monaco.languages.CompletionItemKind.Field
+        insertText: columnName + ' ',
+        kind: monaco.languages.CompletionItemKind.Field,
+        command: {id: 'editor.action.triggerSuggest', title: "" },
+        sortText: CompletionItemSort.Column
     }
 }
 export function functionItem(func: IFunction, range: monaco.languages.CompletionItemRanges | monaco.IRange): monaco.languages.CompletionItem {
@@ -38,9 +53,10 @@ export function functionItem(func: IFunction, range: monaco.languages.Completion
         label: { label: func.name, description: 'Function', detail: ' ' + func.desc },
         kind: monaco.languages.CompletionItemKind.Function,
         documentation: `${func.name}(${paramsDocument})`,
-        insertText: `${func.name}(${params})`,
+        insertText: `${func.name}(${params}) `,
         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-        range
+        range,
+        sortText: CompletionItemSort.Function
     }
 }
 
@@ -51,7 +67,8 @@ export function snippetItem(s: ISnippet, range: monaco.languages.CompletionItemR
         documentation: s.documentation,
         insertText: s.insertText,
         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-        range
+        range,
+        sortText: CompletionItemSort.Snippet
     }
 }
 
@@ -62,6 +79,7 @@ export function schemaItem(schemaName: string, range: monaco.languages.Completio
         kind: monaco.languages.CompletionItemKind.Module,
         detail: 'Schema',
         insertText: schemaName,
-        range
+        range,
+        sortText: CompletionItemSort.Schema
     }
 }

@@ -1,4 +1,5 @@
 const words: string[] = [
+  "*",
   "ADMIN",
   "AFTER",
   "ALLOCATE",

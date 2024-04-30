@@ -6,6 +6,7 @@ import functions from '../functions';
 import _package from '../package';
 
 import worker from '../worker/workerInstance';
+import { getCompletionArgs } from '../../autoComplete';
 
 const plsqlDataTypes = [
     'PLS_INTEGER', 'BINARY_INTEGER', 'BINARY_FLOAT', 'BINARY_DOUBLE', 'NUMBER', 'DEC', 'DECIMAL', 'NUMERIC', 'DOUBLE PRECISION', 'FLOAT', 'INT', 'INTEGER', 'SMALLINT', 'REAL',
@@ -29,22 +30,9 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
         context: monaco.languages.CompletionContext,
         token: monaco.CancellationToken
     ): monaco.languages.ProviderResult<monaco.languages.CompletionList> {
-        const triggerCharacter = context.triggerCharacter;
-        const delimiter = this.plugin?.modelOptionsMap.get(model.id)?.delimiter || ';';
-        const word = model.getWordUntilPosition(position);
-        const range: monaco.IRange = {
-            startLineNumber: position.lineNumber,
-            endLineNumber: position.lineNumber,
-            startColumn: word.startColumn,
-            endColumn: word.endColumn
-        }
-        /**
-         * select * fro|m
-         * =>tokens: select * |
-         * replace select * [fro|m]
-         */
-        const offset = model.getOffsetAt(position);
-        return this.getCompleteWordFromOffset(offset, model.getValue(), delimiter, range, model, triggerCharacter)
+        const { offset, value, delimiter, range, triggerCharacter } = getCompletionArgs(model, position, context, this.plugin)
+
+        return this.getCompleteWordFromOffset(offset, value, delimiter, range, model, triggerCharacter)
     }
 
     async getColumnList(model, item, range) {

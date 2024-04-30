@@ -146,7 +146,8 @@ export default {
   },
   getAutoCompletion(text, delimiter, offset): AutoCompletionItems {
     const convertMap = {
-      "NULLX": "NULL"
+      "NULLX": "NULL",
+      "STAR": "*"
     }
     const sqlDocuments = getSQLDocument(text, delimiter);
     let statement = sqlDocuments.statements.find(s => s.start <= (offset - 1) && s.stop >= (offset - 1));
@@ -268,6 +269,7 @@ export default {
           }
         }
       }
+      console.log(tokens);
       tokens = tokens?.filter(token => keywordsSet.has(token));
       if (tokens) {
         completions = tokens.map(token => convertMap[token] || token);
