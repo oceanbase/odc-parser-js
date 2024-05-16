@@ -6,6 +6,7 @@ import MonacoAutoComplete from './autoComplete';
 // import MonacoHover from './hover';
 import { conf, language } from './monarch/oboracle';
 import { DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider } from '../format';
+import MonacoInlineComplete from '../inlineCompletion';
 
 export function setup (plugin: PLugin) {
     monaco.languages.register({
@@ -18,4 +19,5 @@ export function setup (plugin: PLugin) {
     // monaco.languages.registerDefinitionProvider(LanguageType.OB_Oracle, new MonacoDefinition(plugin))
     monaco.languages.registerDocumentFormattingEditProvider(LanguageType.OB_Oracle, new DocumentFormattingEditProvider(plugin, LanguageType.OB_Oracle))
     monaco.languages.registerDocumentRangeFormattingEditProvider(LanguageType.OB_Oracle, new DocumentRangeFormattingEditProvider(plugin, LanguageType.OB_Oracle))
+    monaco.languages.registerInlineCompletionsProvider(LanguageType.OB_Oracle, new MonacoInlineComplete(plugin))
 }

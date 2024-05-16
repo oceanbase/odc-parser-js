@@ -24,13 +24,53 @@ let plugin: any;
 async function initPlugin() {
     import('../../../../dist/index').then(module => {
         const Plugin = module.default;
-         plugin = new Plugin();
+        plugin = new Plugin();
         plugin.setup();
     })
 }
 
 initPlugin();
 
+
+async function completions(input: string) {
+    const res = await fetch("https://api.deepseek.com/chat/completions", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer sk-792f40a250ab459098c6760f9b48bb04'
+        },
+        body: JSON.stringify({
+            model: "deepseek-chat",
+            top_p: 0.1,
+            messages: [
+                {
+                    content: input,
+                    role: "user"
+                }
+            ]
+        })
+    })
+    const json = await res.json();
+    return json?.choices?.[0]?.message?.content
+
+
+}
+
+async function qwenCompletions(input: string) {
+    const response = await fetch("http://127.0.0.1:7001/api/completions", {
+        method: 'post',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+           input
+        })
+    })
+    const json = await response?.text();
+    console.log(json)
+    return json
+}
 
 export default function () {
 
@@ -70,6 +110,11 @@ export default function () {
             if (model) {
                 plugin.setModelOptions(model, {
                     delimiter: ';',
+                    llm: {
+                        async completions(input: string) {
+                            return await qwenCompletions(input)
+                        }
+                    },
                     async getTableList() {
                         return [
                             'user_table',
@@ -90,7 +135,7 @@ export default function () {
                             'schema2'
                         ]
                     },
-                    async getTableDDL () {
+                    async getTableDDL() {
                         return `create table aa (
     id int,
     uname varchar(20)
@@ -109,14 +154,14 @@ export default function () {
                     async getTableColumns(tableName, dbName?) {
                         return [
                             {
-                                columnName: tableName+'column1',
+                                columnName: tableName + 'column1',
                                 columnType: 'varchar'
                             },
                             {
-                                columnName: tableName+'column2',
+                                columnName: tableName + 'column2',
                                 columnType: 'int'
                             }
-                        ]   
+                        ]
                     },
                     async getDataTypes() {
                         return [
@@ -167,10 +212,10 @@ export default function () {
             <button onClick={() => {
                 model && monaco.editor.setModelLanguage(model, 'mysql')
             }}>mysql</button>
-             <button onClick={() => {
+            <button onClick={() => {
                 setTheme("obwhite")
             }}>theme: white</button>
-             <button onClick={() => {
+            <button onClick={() => {
                 setTheme("obdark")
             }}>theme: dark</button>
             <button onClick={() => { addVim() }}>open vim mode</button>

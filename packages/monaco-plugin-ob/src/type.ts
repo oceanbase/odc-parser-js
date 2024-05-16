@@ -39,4 +39,7 @@ export interface IModelOptions {
     getTableDDL?: (tableName: string, dbName?: string) => Promise<string>;
     getSchemaInfo?: (dbName?: string) => Promise<string>;
     getSnippets?: () => Promise<ISnippet[]>;
+    llm?: {
+        completions: (input: string) => Promise<string>;
+    }
 }
