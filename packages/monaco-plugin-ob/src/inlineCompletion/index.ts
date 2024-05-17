@@ -19,10 +19,9 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
     }
     public provideInlineCompletions(model: monaco.editor.ITextModel, position: monaco.Position, context: monaco.languages.InlineCompletionContext, token: monaco.CancellationToken): monaco.languages.ProviderResult<monaco.languages.InlineCompletions<monaco.languages.InlineCompletion>> {
         const modelId = model.id;
-        const selectedSuggestionInfo = context.selectedSuggestionInfo;
-        if (selectedSuggestionInfo) {
-            return;
-        }
+        const version = this.modelVersion[modelId] ? (this.modelVersion[modelId] + 1) : 1;
+        this.modelVersion[modelId] = version;
+        const currentToken = model.getWordAtPosition(position)
         const plugin = this.getModelOptions(modelId);
         if (!plugin?.llm?.completions) {
             return;
@@ -31,30 +30,41 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
         const positionOffset = model.getOffsetAt(position);
         const inputWithOffset = editorValue.substring(0, positionOffset) + '|' + editorValue.substring(positionOffset);
         return new Promise(async (resolve, reject) => {
-            const version = this.modelVersion[modelId] ? (this.modelVersion[modelId] + 1) : 1;
-            this.modelVersion[modelId] = version;
-            await new Promise((resolve) => setTimeout(resolve, 500));
-            if (version !== this.modelVersion[modelId]) {
+            await new Promise((resolve) => setTimeout(() => resolve(null), 500));
+            if (version !== this.modelVersion[modelId] || token.isCancellationRequested) {
                 resolve({
                     items: []
                 })
                 return;
             }
-            const tables = await plugin?.getTableList?.() || [];
-            const prompt = "你是一个SQL补全机器人，来完成代码补全的工作。数据库信息为：" 
-            + `SQL 方言：${model.getLanguageId()}`
-            + `表名：${tables?.slice(50).join(",")}`
-            + "。"
-            + "给你一段代码，代码中的 ｜ 代表光标位置，请输出这个位置需要填充的SQL代码。"
-            + `只输出代码内容，不要解释，如果你不确定，请返回IDONTKNOW，假如有需要用户自定义的变量，请用 \${序号:变量名} 包裹。例如输入 “create | aa (id int);”，输出 “table”。以下是输入： \n${inputWithOffset}`;
+            const tables = (await plugin?.getTableList?.())?.slice(0, 30) || [];
+            let tableColumns = {};
+            for(let table of tables) {
+                tableColumns[table] = await plugin?.getTableColumns?.(table);
+            }
+            const tablePrompt = Object.keys(tableColumns).map(tableName => {
+                return `${tableName}(${tableColumns[tableName]?.map(c => c.columnName).join(', ')})`
+            })
+            const prompt = "You are an SQL autocomplete bot tasked with completing code segments. Here's the database information:\n" 
+            + `SQL Dialect: ${model.getLanguageId()} \n`
+            + `Tables: ${tablePrompt}\n`
+
+            + "Your job is to fill in the SQL code at the position indicated by the '|' cursor in the given code segment. Your task is to provide the necessary SQL code that fits at the cursor's location and ensure that the code formatting is beautified. Do not include explanations. If you are unsure of the completion, respond with 'IDONTKNOW'."
+            + "Any variables that the user must define should be wrapped in ${index:variable_name} format. For example, given the input 'create | aa (id int);', the expected output would be 'table'. "
+            + `Here is the input for your task: \n${inputWithOffset}`;
             
-            const value = await plugin?.llm?.completions(prompt); 
+            let value = await plugin?.llm?.completions(prompt); 
+            if (token.isCancellationRequested) {
+                resolve(null);
+                return;
+            }
             if (!value || value.includes?.('IDONTKNOW')) {
                 resolve({
                     items: []
                 })
                 return;
             }
+            value = (currentToken?.word || '') + value
             resolve(
                 {
                     items: [

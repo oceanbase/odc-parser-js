@@ -154,11 +154,15 @@ export default function () {
                     async getTableColumns(tableName, dbName?) {
                         return [
                             {
-                                columnName: tableName + 'column1',
+                                columnName: tableName + '_id',
+                                columnType: 'int'
+                            },
+                            {
+                                columnName: tableName + '_name',
                                 columnType: 'varchar'
                             },
                             {
-                                columnName: tableName + 'column2',
+                                columnName: tableName + '_age',
                                 columnType: 'int'
                             }
                         ]
@@ -172,9 +176,13 @@ export default function () {
                             'INTEGER',
                             'DECIMAL',
                             'FLOAT',
-                            'FLOAT',
-                            'DATETIME',
-                            'DATE'
+                            'DOUBLE',
+                            'DATE',
+                            'TIME',
+                            'TIMESTAMP',
+                            'YEAR',
+                            'BINARY',
+                            'VARBINARY',
                         ]
                     },
                 })
