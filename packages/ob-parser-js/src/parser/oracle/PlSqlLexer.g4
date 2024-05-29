@@ -2360,6 +2360,8 @@ REGULAR_ID: SIMPLE_LETTER (SIMPLE_LETTER | '$' | '_' | '#' | [0-9])*;
 
 SPACES: [ \t\r\n]+ -> channel(HIDDEN);
 
+ERROR_TOKEN: .;
+
 // Fragment rules
 
 fragment NEWLINE_EOF    : NEWLINE | EOF;

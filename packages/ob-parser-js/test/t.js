@@ -1,12 +1,25 @@
 const SQLDocument = require("../lib/index").SQLDocument;
 
 const sql = `
-select * from 中文a98812 => a;
+SELECT
+  *
+FROM
+  oceanbase.__all_acquired_snapshot
+WHERE
+  tablet_id != '1000'$
+  SHOW tables $
+  SELECT
+  *
+FROM
+  oceanbase.__all_acquired_snapshot
+WHERE
+  tablet_id != '1000' $
 `
 
 const doc = new SQLDocument(
     {
-        text: sql
+        text: sql,
+        delimiter: '$'
     }
 );
-console.log(doc.getFormatText())
+console.log(doc.statements)
