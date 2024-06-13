@@ -389,6 +389,9 @@ export default {
        */
       const sqlDocuments = getSQLDocument(sqlStr, delimiter);
       const sqlStatement = sqlDocuments.statements?.[0];
+      if (!sqlStatement) {
+        return null;
+      }
       return sqlCompletion(sqlStatement, sqlOffset)
     } else {
       tokens = tokens?.filter(token => plKeywordsSet.has(token));
