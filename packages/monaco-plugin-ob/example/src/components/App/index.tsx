@@ -110,10 +110,19 @@ export default function () {
             if (model) {
                 plugin.setModelOptions(model, {
                     delimiter: ';',
-                    llm: {
-                        async completions(input: string) {
-                            return await qwenCompletions(input)
-                        }
+                    // llm: {
+                    //     async completions(input: string) {
+                    //         return await qwenCompletions(input)
+                    //     }
+                    // },
+                    async getSnippets() {
+                        return [
+                            {
+                                label: 'select',
+                                documentation: 's',
+                                insertText: 'select 1'
+                            }
+                        ]
                     },
                     async getTableList() {
                         return [

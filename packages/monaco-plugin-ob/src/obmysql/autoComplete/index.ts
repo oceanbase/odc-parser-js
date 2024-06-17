@@ -84,7 +84,11 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
         if (result) {
             let modelOptions = this.getModelOptions(model.id);
             let suggestions: monaco.languages.CompletionItem[] = [];
+            let onlyKeywords = true;
             for (let item of result) {
+                if (typeof item !== 'string') {
+                    onlyKeywords = false;
+                }
                 if (typeof item === 'string') {
                     suggestions.push(keywordItem(item, range))
                 } else if (item.type === 'allTables') {
@@ -116,9 +120,11 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                     suggestions = suggestions.concat(await this.getFunctions(model, range))
                 }
             }
-            suggestions = suggestions.concat(
-                await this.getSnippets(model, range)
-            )
+            if (onlyKeywords) {
+                suggestions = suggestions.concat(
+                    await this.getSnippets(model, range)
+                )
+            }
             return {
                 suggestions,
                 incomplete: false
