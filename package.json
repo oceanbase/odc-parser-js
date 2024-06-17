@@ -11,6 +11,7 @@
   "license": "ISC",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "pnpm --filter './packages/**' build"
+    "build": "pnpm --filter './packages/**' build",
+    "publish": "pnpm --filter './packages/**' publish"
   }
 }

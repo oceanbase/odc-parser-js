@@ -25,7 +25,8 @@ export default {
                 return new N1qlFormatter(cfg).format(query);
             case "pl/sql":
                 return new PlSqlFormatter(cfg).format(query);
-            case "ob":
+            case "ob-mysql":
+            case 'ob-oracle':
                 return new OBFormatter(cfg).format(query);
             case "sql":
             case undefined:

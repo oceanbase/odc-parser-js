@@ -97,20 +97,44 @@ export default class OBFormatter {
      * @return {String} formatted string
      */
     format(query) {
+        const language = this.cfg.language;
+        let params;
+        switch (language) {
+            case 'ob-mysql': {
+                params = {
+                    reservedWords,
+                    reservedToplevelWords,
+                    reservedNewlineWords,
+                    relineFunctionPrefix,
+                    stringTypes: [`""`, "''", "``", "[]"],
+                    openParens: ["("],
+                    closeParens: [")"],
+                    indexedPlaceholderTypes: ["?"],
+                    namedPlaceholderTypes: [":"],
+                    lineCommentTypes: ["--"],
+                    specialWordChars: ["$", "#", "@", "\\u4e00-\\u9fff"]
+                };
+                break;
+            }
+            case 'ob-oracle': {
+                params = {
+                    reservedWords,
+                    reservedToplevelWords,
+                    reservedNewlineWords,
+                    relineFunctionPrefix,
+                    stringTypes: [`""`, "'\\'"],
+                    openParens: ["("],
+                    closeParens: [")"],
+                    indexedPlaceholderTypes: ["?"],
+                    namedPlaceholderTypes: [":"],
+                    lineCommentTypes: ["--"],
+                    specialWordChars: ["$", "#", "@", "\\u4e00-\\u9fff"]
+                };
+                break;
+            }
+        }
         if (!tokenizer) {
-            tokenizer = new Tokenizer({
-                reservedWords,
-                reservedToplevelWords,
-                reservedNewlineWords,
-                relineFunctionPrefix,
-                stringTypes: [`""`, "''", "``", "[]"],
-                openParens: ["("],
-                closeParens: [")"],
-                indexedPlaceholderTypes: ["?"],
-                namedPlaceholderTypes: [":"],
-                lineCommentTypes: ["--"],
-                specialWordChars: ["$", "#", "@", "\\u4e00-\\u9fff"]
-            });
+            tokenizer = new Tokenizer(params);
         }
         return new Formatter(this.cfg, tokenizer).format(query);
     }

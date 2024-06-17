@@ -76,5 +76,5 @@ const reservedNewlineWords = [
 ];
 
 export default function (input: string, isMySQL: boolean = false) {
-    return Formatter.format(input, { language: 'ob' })
+    return Formatter.format(input, { language: isMySQL ? 'ob-mysql' : 'ob-oracle' })
 }
