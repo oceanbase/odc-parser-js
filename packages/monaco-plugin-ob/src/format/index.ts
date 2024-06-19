@@ -54,12 +54,12 @@ export class DocumentRangeFormattingEditProvider implements monaco.languages.Doc
     const text: string = model.getValueInRange(range);
     return new Promise(async (resolve) => {
       const formatMsg = await format(text, this.type, this.plugin?.modelOptionsMap.get(model.id)?.delimiter || ';')
-      return [
+      resolve([
         {
           range,
           text: formatMsg
         }
-      ]
+      ])
     })
   }
 }
