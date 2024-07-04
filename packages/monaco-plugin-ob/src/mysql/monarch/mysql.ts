@@ -6,7 +6,7 @@ import { keywords } from '../keywords';
 
 export const conf: monaco.languages.LanguageConfiguration = {
   comments: {
-    lineComment: '--',
+    lineComment: '-- ',
     blockComment: ['/*', '*/'],
   },
   brackets: [
@@ -79,7 +79,7 @@ export const language: monaco.languages.IMonarchLanguage = {
     ],
     whitespace: [[/\s+/, 'white']],
     comments: [
-      [/--+.*/, 'comment'],
+      [/--+\s.*/, 'comment'],
       [/#+.*/, 'comment'],
       [/\/\*/, { token: 'comment.quote', next: '@comment' }],
     ],
