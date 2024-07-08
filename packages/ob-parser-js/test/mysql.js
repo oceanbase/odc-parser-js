@@ -1,15 +1,18 @@
-const { SQLType } = require("../lib/index");
+const { SQLType } = require('../lib/parser/type');
 
-const SQLDocument = require("../lib/index").SQLDocument;
+const format = require('../lib/plugins/format').default;
 
 const sql = `
-select * from 中文a98812;
+create function ${'`fun1112`'} (${'`aa`'}  varchar(45)) returns int(11)
+begin
+  -- Enter your function code
+  return 1;
+end;
 `
 
-const doc = new SQLDocument(
-    {
-        text: sql,
-        type: SQLType.MySQL
-    }
-);
-console.log(doc.statements[0].parser.parse(sql))
+const doc = format({
+    sql: sql,
+    type: SQLType.OBMySQL,
+    delimiter: ";"
+});
+console.log(doc)

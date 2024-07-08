@@ -121,6 +121,7 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                 }
             }
             if (onlyKeywords) {
+                suggestions.push(keywordItem("RETURN", range));
                 suggestions = suggestions.concat(
                     await this.getSnippets(model, range)
                 )
