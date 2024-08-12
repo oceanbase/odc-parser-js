@@ -5,7 +5,7 @@ import tokenTypes from "./tokenTypes";
 export default class Tokenizer {
     private WHITESPACE_REGEX = /^(\s+)/;
     private NUMBER_REGEX = /^((-\s*)?[0-9]+(\.[0-9]+)?|0x[0-9a-fA-F]+|0b[01]+)\b/;
-    private OPERATOR_REGEX = /^(!=|<>|==|=>|<=|>=|:=|!<|!>|\|\||::|->>|->|~~\*|~~|!~~\*|!~~|~\*|!~\*|!~|<<|>>|.)/;
+    private OPERATOR_REGEX = /^(!=|<=>|<>|==|=>|<=|>=|:=|!<|!>|\|\||::|->>|->|~~\*|~~|!~~\*|!~~|~\*|!~\*|!~|<<|>>|.)/;
     private BLOCK_COMMENT_REGEX = /^(\/\*[^]*?(?:\*\/|$))/;
     private LINE_COMMENT_REGEX;
     private RESERVED_TOPLEVEL_REGEX;
