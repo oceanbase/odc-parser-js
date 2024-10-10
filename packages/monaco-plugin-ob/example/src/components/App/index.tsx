@@ -70,11 +70,11 @@ export default function () {
             if (model) {
                 plugin.setModelOptions(model, {
                     delimiter: ';',
-                    // llm: {
-                    //     async completions(input: string) {
-                    //         return await qwenCompletions(input)
-                    //     }
-                    // },
+                    llm: {
+                        async completions(input: string, pos: number) {
+                            return 'aaa1'
+                        }
+                    },
                     async getSnippets() {
                         return [
                             {

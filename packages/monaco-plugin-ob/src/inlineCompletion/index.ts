@@ -48,7 +48,7 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
                 })
                 return;
             }
-            // value = (currentToken?.word || '') + value
+            value = (currentToken?.word || '') + value
             resolve(
                 {
                     items: [
