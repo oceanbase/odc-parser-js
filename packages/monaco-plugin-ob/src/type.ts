@@ -40,6 +40,6 @@ export interface IModelOptions {
     getSchemaInfo?: (dbName?: string) => Promise<string>;
     getSnippets?: () => Promise<ISnippet[]>;
     llm?: {
-        completions: (input: string) => Promise<string>;
+        completions: (input: string, cursorPosition: number) => Promise<string>;
     }
 }

@@ -32,46 +32,6 @@ async function initPlugin() {
 initPlugin();
 
 
-async function completions(input: string) {
-    const res = await fetch("https://api.deepseek.com/chat/completions", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer sk-792f40a250ab459098c6760f9b48bb04'
-        },
-        body: JSON.stringify({
-            model: "deepseek-chat",
-            top_p: 0.1,
-            messages: [
-                {
-                    content: input,
-                    role: "user"
-                }
-            ]
-        })
-    })
-    const json = await res.json();
-    return json?.choices?.[0]?.message?.content
-
-
-}
-
-async function qwenCompletions(input: string) {
-    const response = await fetch("http://127.0.0.1:7001/api/completions", {
-        method: 'post',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-           input
-        })
-    })
-    const json = await response?.text();
-    console.log(json)
-    return json
-}
-
 export default function () {
 
     const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
