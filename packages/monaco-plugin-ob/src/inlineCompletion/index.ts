@@ -28,7 +28,7 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
         }
         const editorValue = model.getValue();
         const positionOffset = model.getOffsetAt(position);
-        return new Promise(async (resolve, reject) => {
+        return new Promise<monaco.languages.InlineCompletions<monaco.languages.InlineCompletion> | null | undefined>(async (resolve, reject) => {
             await new Promise((resolve) => setTimeout(() => resolve(null), 500));
             if (version !== this.modelVersion[modelId] || token.isCancellationRequested) {
                 resolve({
@@ -62,6 +62,9 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
             )
         }).catch(e => {
             console.log('inline completion: ', e)
+            return {
+                items: []
+            }
         })
     }
 }
