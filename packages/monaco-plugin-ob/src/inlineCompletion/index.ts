@@ -60,6 +60,8 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
                     ]
                 }
             )
+        }).catch(e => {
+            console.log('inline completion: ', e)
         })
     }
 }
