@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "antlr4": "~4.8.0",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/antlr4": "~4.7.2",
