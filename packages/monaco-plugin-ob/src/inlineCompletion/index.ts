@@ -48,13 +48,36 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
                 })
                 return;
             }
-            value = (currentToken?.word || '') + value
+            
+            const start = model.getValueInRange({
+                startLineNumber: position.lineNumber,
+                startColumn: 0,
+                endLineNumber: position.lineNumber,
+                endColumn: position.column
+            });
+            const end = model.getValueInRange({
+                startLineNumber: position.lineNumber,
+                startColumn: position.column,
+                endLineNumber: position.lineNumber + 1,
+                endColumn: 0
+            })
+            let newValue = value;
+            if (currentToken && currentToken.word) {
+                newValue = start + value + end;
+            } else {
+                newValue = value + end;
+            }
             resolve(
                 {
                     items: [
                         {
-                            insertText: {
-                                snippet: value
+                            insertText: value,
+                            filterText: newValue,
+                            range: {
+                                startLineNumber: position.lineNumber,
+                                startColumn: position.column,
+                                endLineNumber: position.lineNumber,
+                                endColumn: position.column
                             }
                         }
                     ]

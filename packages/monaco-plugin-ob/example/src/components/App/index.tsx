@@ -72,7 +72,7 @@ export default function () {
                     delimiter: ';',
                     llm: {
                         async completions(input: string, pos: number) {
-                            return 'aaa1'
+                            return 'aaa1\naaaa\n'
                         }
                     },
                     async getSnippets() {
