@@ -8,6 +8,7 @@ import { getTableContextFromMap } from '../../model/helper';
 import { Query, QueryCursorContext } from '../../model/query';
 import { createFromASTTree } from '../../model/dialect/obmysql';
 import { keywords } from '../keywords';
+import { ISelectColumn } from '../../model';
 
 const keywordsSet = new Set(keywords)
 
@@ -332,5 +333,82 @@ export default {
 
     return sqlCompletion(statement, offset - statement.start)
    
+  },
+
+  getOffsetType(text: string, delimiter: string, offset: number): {
+    type: 'table';
+    name: string;
+    schema?: string;
+  } | null {
+    if (!text) {
+      return null;
+    }
+    const sqlDocuments = getSQLDocument(text, delimiter);
+    let statement = sqlDocuments.statements.find(s => s.start <= (offset - 1) && s.stop >= (offset - 1));
+    if (!statement) {
+      return null;
+    }
+    const result = statement.parse(offset, () => {});
+    if (!result){
+      return null;
+    }
+    const queryMap = createFromASTTree(result.result);
+    let query: Query | undefined;
+    queryMap.forEach((value, key) => {
+      const location = value.location;
+      if (!location) {
+        return;
+      }
+      if (location.range[0] <= offset && location.range[1] >= offset) {
+        if (!query) {
+          query = value;
+          return;
+        }
+        if (query.location && query.location.range[0] < location.range[0]) {
+          query = value;
+          return;
+        }
+      }
+    })
+    if (!query) {
+      return null;
+    }
+    const fromTable = query.fromTables.find(fromTable => {
+      const { location } = fromTable;
+      return location.range[0] <= offset && location.range[1] >= offset;
+    })
+    if (fromTable) {
+      if (fromTable.query) {
+        return null;
+      }
+      return {
+        type: 'table',
+        name: fromTable.tableName || '',
+        schema: fromTable.schemaName
+      }
+    }
+    /**
+     * select columns
+     */
+    const selectColumn = query.selectColumns.find(selectColumn => {
+      const { location } = selectColumn;
+      return location.range[0] <= offset && location.range[1] >= offset;
+    })
+    if (selectColumn) {
+      if (!selectColumn.columnName || !(selectColumn.columnName instanceof Array) || selectColumn.columnName?.length < 2) {
+        return null;
+      }
+      const tableAlias = selectColumn.columnName[0];
+      const from = query.fromTables.find(from => from.alias === tableAlias || from.tableName === tableAlias);
+      if (!from) {
+        return null;
+      }
+      return {
+        type: 'table',
+        name: from.tableName || '',
+        schema: from.schemaName
+      }
+    }
+    return null;
   }
 }

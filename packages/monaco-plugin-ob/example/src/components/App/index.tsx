@@ -104,8 +104,8 @@ export default function () {
                             'schema2'
                         ]
                     },
-                    async getTableDDL() {
-                        return `create table aa (
+                    async getTableDDL(tb: string, db: string) {
+                        return `create table ${db}.${tb} (
     id int,
     uname varchar(20)
 );

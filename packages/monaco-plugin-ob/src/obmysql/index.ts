@@ -5,6 +5,7 @@ import MonacoAutoComplete from './autoComplete';
 import { conf, language } from './monarch/obmysql';
 import { DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider } from '../format';
 import MonacoInlineComplete from '../inlineCompletion';
+import MonacoHover from './hover';
 
 export function setup(plugin: PLugin) {
     monaco.languages.register({
@@ -16,4 +17,5 @@ export function setup(plugin: PLugin) {
     monaco.languages.registerDocumentFormattingEditProvider(LanguageType.OB_MySQL, new DocumentFormattingEditProvider(plugin, LanguageType.OB_MySQL))
     monaco.languages.registerDocumentRangeFormattingEditProvider(LanguageType.OB_MySQL, new DocumentRangeFormattingEditProvider(plugin, LanguageType.OB_MySQL))
     monaco.languages.registerInlineCompletionsProvider(LanguageType.OB_MySQL, new MonacoInlineComplete(plugin))
+    monaco.languages.registerHoverProvider(LanguageType.OB_MySQL, new MonacoHover(plugin))
 }

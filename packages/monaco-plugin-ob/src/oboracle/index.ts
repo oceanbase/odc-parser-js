@@ -7,6 +7,7 @@ import MonacoAutoComplete from './autoComplete';
 import { conf, language } from './monarch/oboracle';
 import { DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider } from '../format';
 import MonacoInlineComplete from '../inlineCompletion';
+import MonacoHover from './hover';
 
 export function setup (plugin: PLugin) {
     monaco.languages.register({
@@ -15,7 +16,7 @@ export function setup (plugin: PLugin) {
     monaco.languages.setMonarchTokensProvider(LanguageType.OB_Oracle, language);
     monaco.languages.setLanguageConfiguration(LanguageType.OB_Oracle, conf);
     monaco.languages.registerCompletionItemProvider(LanguageType.OB_Oracle, new MonacoAutoComplete(plugin))
-    // monaco.languages.registerHoverProvider(LanguageType.OB_Oracle, new MonacoHover(plugin));
+    monaco.languages.registerHoverProvider(LanguageType.OB_Oracle, new MonacoHover(plugin));
     // monaco.languages.registerDefinitionProvider(LanguageType.OB_Oracle, new MonacoDefinition(plugin))
     monaco.languages.registerDocumentFormattingEditProvider(LanguageType.OB_Oracle, new DocumentFormattingEditProvider(plugin, LanguageType.OB_Oracle))
     monaco.languages.registerDocumentRangeFormattingEditProvider(LanguageType.OB_Oracle, new DocumentRangeFormattingEditProvider(plugin, LanguageType.OB_Oracle))

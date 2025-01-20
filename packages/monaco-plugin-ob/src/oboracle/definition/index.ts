@@ -1,6 +1,5 @@
 import * as monaco from 'monaco-editor';
 import { PLugin } from '../../Plugin';
-import { findTargetVariable } from '../hover/helper';
 import { IFromTable, ITableVariable } from '../worker/type';
 import wrapWorker from '../worker/workerInstance';
 
