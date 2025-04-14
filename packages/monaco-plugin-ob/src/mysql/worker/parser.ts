@@ -347,6 +347,7 @@ export default {
     if (!statement) {
       return null;
     }
+    offset = offset - statement.start;
     const result = statement.parse(offset, () => {});
     if (!result){
       return null;
