@@ -9,6 +9,7 @@
   ],
   "author": "xiaokang",
   "license": "ISC",
+  "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "pnpm --filter './packages/**' build",
