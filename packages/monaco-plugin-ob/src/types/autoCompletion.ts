@@ -1,6 +1,7 @@
 export interface CompletionAllTables {
     type: 'allTables';
     schema?: string;
+    disableSys?: boolean;
 }
 
 export interface CompletionAllSchemas {
@@ -20,6 +21,7 @@ export interface CompletionTableColumns {
     type: 'tableColumns';
     schemaName?: string;
     tableName: string;
+    autoNext?: boolean;
 }
 
 export interface CompletionObjectAccess {

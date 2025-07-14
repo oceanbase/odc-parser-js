@@ -219,11 +219,13 @@ export default {
             type: 'allSchemas'
           })
           completions.push({
-            type: 'allTables'
+            type: 'allTables',
+            disableSys: true
           })
         } else {
           completions.push({
             type: 'tableColumns',
+            autoNext: false,
             tableName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).tableName,
             schemaName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).schema
           })
@@ -236,13 +238,15 @@ export default {
             type: 'allSchemas'
           })
           completions.push({
-            type: 'allTables'
+            type: 'allTables',
+            disableSys: true
           })
         } else {
           completions.push({
             type: 'tableColumns',
-            tableName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).tableName,
-            schemaName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).schema
+            autoNext: false,
+            tableName: getSchemaAndTableNameFromText(result.updateStmt.table.getText()).tableName,
+            schemaName: getSchemaAndTableNameFromText(result.updateStmt.table.getText()).schema
           })
         }
         return completions;
@@ -253,13 +257,15 @@ export default {
             type: 'allSchemas'
           })
           completions.push({
-            type: 'allTables'
+            type: 'allTables',
+            disableSys: true
           })
         } else {
           completions.push({
             type: 'tableColumns',
-            tableName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).tableName,
-            schemaName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).schema
+            autoNext: false,
+            tableName: getSchemaAndTableNameFromText(result.deleteStmt.table.getText()).tableName,
+            schemaName: getSchemaAndTableNameFromText(result.deleteStmt.table.getText()).schema
           })
         }
         return completions;

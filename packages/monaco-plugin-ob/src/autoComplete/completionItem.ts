@@ -34,14 +34,14 @@ export function tableItem(tableName: string, schemaName: string = '', insertSche
     }
 }
 
-export function tableColumnItem(columnName: string, tableName: string, schemaName: string = '', range: monaco.languages.CompletionItemRanges | monaco.IRange): monaco.languages.CompletionItem {
+export function tableColumnItem(columnName: string, tableName: string, schemaName: string = '', range: monaco.languages.CompletionItemRanges | monaco.IRange, autoNext: boolean = true): monaco.languages.CompletionItem {
     const tableFullName = [schemaName, tableName].filter(Boolean).join('.');
     return {
         label: { label: columnName, description: 'Column', detail: ' ' + tableFullName },
         range,
         insertText: columnName + ' ',
         kind: monaco.languages.CompletionItemKind.Field,
-        command: {id: 'editor.action.triggerSuggest', title: "" },
+        command: autoNext ? {id: 'editor.action.triggerSuggest', title: "" } : undefined,
         sortText: CompletionItemSort.Column
     }
 }
