@@ -25,9 +25,13 @@ function createNode(type, isTerminal, text, location, children, yy, isSQLStmt) {
     }
 }
 
-
+let inited = false;
 module.exports = {
     initParser(parser, unreservedRules) {
+        if (inited) {
+            return;
+        }
+        inited = true;
         const originParse = parser.parse;
         unreservedRules = unreservedRules || new Set();
         let insertStmt = null;
@@ -86,7 +90,6 @@ module.exports = {
              * 生成lalr分析表的时候，会在没有r-r冲突的时候会合并同类项，这就会导致解析虽然没事情，但是无法根据分析表准确的获取当前项集的follow集
              * 所以我们需要不断的reduce来推演，从而判断哪些token是可以被shift的，从而来获取更加准确的follow集。
              */
-            console.log('test collect')
             const table = parser.table;
             const productions = parser.productions_;
             let tokens = new Set();
