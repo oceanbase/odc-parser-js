@@ -1,6 +1,6 @@
 {
   "name": "@oceanbase-odc/ob-parser-js",
-  "version": "3.0.5",
+  "version": "3.1.0",
   "description": "OB 前端解析工具库",
   "main": "./lib/index.js",
   "module": "./esm/index.js",

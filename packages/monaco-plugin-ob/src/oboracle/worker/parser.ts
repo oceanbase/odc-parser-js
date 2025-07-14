@@ -187,7 +187,83 @@ export default {
         followRules = _followRules;
         tokenStack = _tokenStack;
       });
-
+      function addKeywords() {
+        tokens = tokens?.filter(token => keywordsSet.has(token));
+        if (tokens) {
+          completions = tokens.map(token => convertMap[token] || token);
+        }
+      }
+      function getSchemaAndTableNameFromText (text: string) {
+        if (!text) {
+          return {
+            schema: '',
+            tableName: ''
+          }
+        }
+        const schemaAndTableName = text.split('.');
+        if (schemaAndTableName.length === 1) {
+          return {
+            schema: '',
+            tableName: schemaAndTableName[0]
+          }
+        }
+        return {
+          schema: schemaAndTableName[0],
+          tableName: schemaAndTableName[1]
+        }
+      }
+      if (result.insertStmt) {
+        addKeywords();
+        if (!result.insertStmt.table) {
+          completions.push({
+            type: 'allSchemas'
+          })
+          completions.push({
+            type: 'allTables'
+          })
+        } else {
+          completions.push({
+            type: 'tableColumns',
+            tableName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).tableName,
+            schemaName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).schema
+          })
+        }
+        return completions;
+      } else if (result.updateStmt) {
+        addKeywords();
+        if (!result.updateStmt.table) {
+          completions.push({
+            type: 'allSchemas'
+          })
+          completions.push({
+            type: 'allTables'
+          })
+        } else {
+          completions.push({
+            type: 'tableColumns',
+            tableName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).tableName,
+            schemaName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).schema
+          })
+        }
+        return completions;
+      } else if (result.deleteStmt) {
+        addKeywords();
+        if (!result.deleteStmt.table) {
+          completions.push({
+            type: 'allSchemas'
+          })
+          completions.push({
+            type: 'allTables'
+          })
+        } else {
+          completions.push({
+            type: 'tableColumns',
+            tableName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).tableName,
+            schemaName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).schema
+          })
+        }
+        return completions;
+      }
       if (isDot) {
         /**
          * 假如是对象访问符，先确定是否为query里的
@@ -234,7 +310,7 @@ export default {
         }
 
         const queryContext = tableContext?.getContext(offset - 1);
-        switch(queryContext) {
+        switch (queryContext) {
           case QueryCursorContext.FromList: {
             completions = [
               {
@@ -278,15 +354,11 @@ export default {
               objectName: triggerWord
             });
             return completions;
-            
+
           }
         }
       }
-      console.log(tokens);
-      tokens = tokens?.filter(token => keywordsSet.has(token));
-      if (tokens) {
-        completions = tokens.map(token => convertMap[token] || token);
-      }
+      addKeywords();
       let tableContext: Query | undefined;
       const queryMap = createFromASTTree(result.result);
       tableContext = getTableContextFromMap(queryMap, offset);
@@ -420,8 +492,8 @@ export default {
       return null;
     }
     offset = offset - statement.start;
-    const result = statement.parse(offset, () => {});
-    if (!result){
+    const result = statement.parse(offset, () => { });
+    if (!result) {
       return null;
     }
     const queryMap = createFromASTTree(result.result);
