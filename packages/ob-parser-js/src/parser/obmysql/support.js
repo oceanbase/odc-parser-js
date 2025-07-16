@@ -25,13 +25,22 @@ function createNode(type, isTerminal, text, location, children, yy, isSQLStmt) {
     }
 }
 
-
+let inited = false;
 module.exports = {
     initParser(parser, unreservedRules) {
+        if (inited) {
+            return;
+        }
+        inited = true;
         const originParse = parser.parse;
         unreservedRules = unreservedRules || new Set();
-
+        let insertStmt = null;
+        let updateStmt = null;
+        let deleteStmt = null;
         parser.parse = function (input, cursorOffset, completionCallback) {
+            insertStmt = null;
+            updateStmt = null;
+            deleteStmt = null;
             const isOffsetValid = typeof cursorOffset === 'number';
             const self = this;
             // this.yy.input = input;
@@ -60,7 +69,7 @@ module.exports = {
                         completionCallback(...args, tokenStack)
                     });
                     console.timeEnd('completion')
-                    console.log('current offset', symbol, lexer.offset, currentyy.input.slice(0, lexer.offset) + '|' + currentyy.input.slice(lexer.offset))
+                    // console.log('current offset', symbol, lexer.offset, currentyy.input.slice(0, lexer.offset) + '|' + currentyy.input.slice(lexer.offset))
                 }
             }
             let result;
@@ -68,10 +77,10 @@ module.exports = {
                 result = originParse.call(self, input);
             } catch (e) {
                 // console.log('parse fail:', e);
-                return { yy: currentyy, error: e }
+                return { yy: currentyy, error: e, insertStmt, updateStmt, deleteStmt }
             }
             if (result) {
-                return Object.assign({ yy: currentyy }, { result })
+                return Object.assign({ yy: currentyy }, { result, insertStmt, updateStmt, deleteStmt })
             }
         }
         function completion(stack, sstack, sp, completionCallback) {
@@ -81,7 +90,6 @@ module.exports = {
              * 生成lalr分析表的时候，会在没有r-r冲突的时候会合并同类项，这就会导致解析虽然没事情，但是无法根据分析表准确的获取当前项集的follow集
              * 所以我们需要不断的reduce来推演，从而判断哪些token是可以被shift的，从而来获取更加准确的follow集。
              */
-            console.log('test collect')
             const table = parser.table;
             const productions = parser.productions_;
             let tokens = new Set();
@@ -302,6 +310,36 @@ module.exports = {
             );
             self._$ = location;
             return;
+        }
+        return {
+            initInsertStmt() {
+                insertStmt = {
+                    table: null,
+                    columns: {
+                        leftPosition: null,
+                        rightPosition: null
+                    }
+                }
+            },
+            getInsertStmt() {
+                return insertStmt;
+            },
+            initUpdateStmt() {
+                updateStmt = {
+                    table: null
+                }
+            },
+            getUpdateStmt() {
+                return updateStmt;
+            },
+            initDeleteStmt() {
+                deleteStmt = {
+                    table: null
+                }
+            },
+            getDeleteStmt() {
+                return deleteStmt;
+            }
         }
     }
 }

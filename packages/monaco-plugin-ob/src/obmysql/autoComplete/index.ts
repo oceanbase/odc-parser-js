@@ -26,13 +26,13 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
         return this.getCompleteWordFromOffset(offset, value, delimiter, range, model, triggerCharacter)
     }
 
-    async getColumnList(model, item, range) {
+    async getColumnList(model, item, range, autoNext: boolean = true) {
         let modelOptions = this.getModelOptions(model.id);
         const suggestions: monaco.languages.CompletionItem[] = [];
         const columns = await modelOptions?.getTableColumns?.(item.tableName, item.schemaName);
         if (columns) {
             columns.forEach(column => {
-                suggestions.push(tableColumnItem(column.columnName, item.tableName, item.schemaName, range))
+                suggestions.push(tableColumnItem(column.columnName, item.tableName, item.schemaName, range, autoNext))
             })
         }
         return suggestions;
@@ -94,7 +94,7 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                 } else if (item.type === 'allTables') {
                     suggestions = suggestions.concat(await this.getTableList(model, item.schema, range))
                 } else if (item.type === 'tableColumns') {
-                    suggestions = suggestions.concat(await this.getColumnList(model, item, range));
+                    suggestions = suggestions.concat(await this.getColumnList(model, item, range, item.autoNext !== false));
                 } else if (item.type === 'withTable') {
                     suggestions.push(tableItem(item.tableName, 'CTE', false, range))
                 } else if (item.type === 'allSchemas') {
