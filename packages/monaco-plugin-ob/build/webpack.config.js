@@ -16,6 +16,7 @@ module.exports = {
             module: false
         }
     },
+    
     target: 'webworker',
     module: {
         rules: [
@@ -30,7 +31,9 @@ module.exports = {
         ],
     },
     devServer: {
+        port: 9090,
         hot: true,
+        
     },
     mode: 'development',
 };

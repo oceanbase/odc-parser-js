@@ -1,4 +1,4 @@
-import { Token as Antlr4Token, InputStream, CommonTokenStream,  } from 'antlr4';
+import { Token as Antlr4Token, InputStream, CommonTokenStream, } from 'antlr4';
 // @ts-ignore
 import { SQLType, SQLDocument } from '@oceanbase-odc/ob-parser-js';
 import { PLLexer as MySQLLexer } from "@oceanbase-odc/ob-parser-js/esm/parser/obmysql/PLLexer"
@@ -180,7 +180,7 @@ export default {
           completions = tokens.map(token => convertMap[token] || token);
         }
       }
-      function getSchemaAndTableNameFromText (text: string) {
+      function getSchemaAndTableNameFromText(text: string) {
         if (!text) {
           return {
             schema: '',
@@ -201,15 +201,14 @@ export default {
       }
       if (result.insertStmt) {
         addKeywords();
-        if (!result.insertStmt.table) {
-          completions.push({
-            type: 'allSchemas'
-          })
-          completions.push({
-            type: 'allTables',
-            disableSys: true
-          })
-        } else {
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        if (result.insertStmt.table) {
           completions.push({
             type: 'tableColumns',
             autoNext: false,
@@ -220,15 +219,14 @@ export default {
         return completions;
       } else if (result.updateStmt) {
         addKeywords();
-        if (!result.updateStmt.table) {
-          completions.push({
-            type: 'allSchemas'
-          })
-          completions.push({
-            type: 'allTables',
-            disableSys: true
-          })
-        } else {
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        if (result.updateStmt.table) {
           completions.push({
             type: 'tableColumns',
             autoNext: false,
@@ -239,15 +237,14 @@ export default {
         return completions;
       } else if (result.deleteStmt) {
         addKeywords();
-        if (!result.deleteStmt.table) {
-          completions.push({
-            type: 'allSchemas'
-          })
-          completions.push({
-            type: 'allTables',
-            disableSys: true
-          })
-        } else {
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        if (result.deleteStmt.table) {
           completions.push({
             type: 'tableColumns',
             autoNext: false,
@@ -303,7 +300,7 @@ export default {
         }
 
         const queryContext = tableContext?.getContext(offset - 1);
-        switch(queryContext) {
+        switch (queryContext) {
           case QueryCursorContext.FromList: {
             completions = [
               {
@@ -347,7 +344,7 @@ export default {
               objectName: triggerWord
             });
             return completions;
-            
+
           }
         }
       }
@@ -410,7 +407,7 @@ export default {
     }
 
     return sqlCompletion(statement, offset - statement.start)
-   
+
   },
 
   getOffsetType(text: string, delimiter: string, offset: number): {
@@ -427,8 +424,8 @@ export default {
       return null;
     }
     offset = offset - statement.start;
-    const result = statement.parse(offset, () => {});
-    if (!result){
+    const result = statement.parse(offset, () => { });
+    if (!result) {
       return null;
     }
     const queryMap = createFromASTTree(result.result);

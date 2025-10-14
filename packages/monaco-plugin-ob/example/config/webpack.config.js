@@ -39,14 +39,23 @@ module.exports = {
         new webpack.DefinePlugin({
             NODE_ENV: JSON.stringify(process.env.NODE_ENV)
         }),
-        new CopyPlugin({
-            patterns: [
-              { from: process.cwd() + '/worker-dist/', to: 'ob-workers' },
-            ],
-          }),
+        // new CopyPlugin({
+        //     patterns: [
+        //       { from: process.cwd() + '/worker-dist/', to: 'ob-workers' },
+        //     ],
+        //   }),
     ],
     devServer: {
-        hot: true
+        hot: true,
+        proxy: [
+            {
+                context: ['/ob-workers'],
+                target: 'http://localhost:9090',
+                pathRewrite: {
+                    '^/ob-workers': ''
+                }
+            }
+        ]
     },
     mode: 'development',
 };

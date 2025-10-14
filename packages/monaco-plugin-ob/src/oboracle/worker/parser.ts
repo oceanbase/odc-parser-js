@@ -193,7 +193,7 @@ export default {
           completions = tokens.map(token => convertMap[token] || token);
         }
       }
-      function getSchemaAndTableNameFromText (text: string) {
+      function getSchemaAndTableNameFromText(text: string) {
         if (!text) {
           return {
             schema: '',
@@ -214,15 +214,14 @@ export default {
       }
       if (result.insertStmt) {
         addKeywords();
-        if (!result.insertStmt.table) {
-          completions.push({
-            type: 'allSchemas'
-          })
-          completions.push({
-            type: 'allTables',
-            disableSys: true
-          })
-        } else {
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        if (result.insertStmt.table) {
           completions.push({
             type: 'tableColumns',
             autoNext: false,
@@ -233,15 +232,14 @@ export default {
         return completions;
       } else if (result.updateStmt) {
         addKeywords();
-        if (!result.updateStmt.table) {
-          completions.push({
-            type: 'allSchemas'
-          })
-          completions.push({
-            type: 'allTables',
-            disableSys: true
-          })
-        } else {
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        if (result.updateStmt.table) {
           completions.push({
             type: 'tableColumns',
             autoNext: false,
@@ -252,15 +250,14 @@ export default {
         return completions;
       } else if (result.deleteStmt) {
         addKeywords();
-        if (!result.deleteStmt.table) {
-          completions.push({
-            type: 'allSchemas'
-          })
-          completions.push({
-            type: 'allTables',
-            disableSys: true
-          })
-        } else {
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        if (result.deleteStmt.table) {
           completions.push({
             type: 'tableColumns',
             autoNext: false,
