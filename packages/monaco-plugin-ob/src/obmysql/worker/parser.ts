@@ -253,6 +253,34 @@ export default {
           })
         }
         return completions;
+      } else if (result.dropTableStmt) {
+        addKeywords();
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        return completions;
+      } else if (result.alterTableStmt) {
+        addKeywords();
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        if (result.alterTableStmt.table) {
+          completions.push({
+            type: 'tableColumns',
+            autoNext: false,
+            tableName: getSchemaAndTableNameFromText(result.alterTableStmt.table.getText()).tableName,
+            schemaName: getSchemaAndTableNameFromText(result.alterTableStmt.table.getText()).schema
+          })
+        }
+        return completions;
       }
       if (isDot) {
         /**

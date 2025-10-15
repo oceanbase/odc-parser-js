@@ -266,6 +266,41 @@ export default {
           })
         }
         return completions;
+      } else if (result.alterTableStmt) {
+        console.log('alterTableStmt',result.alterTableStmt);
+        addKeywords();
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+        if (result.alterTableStmt.table) {
+          completions.push({
+            type: 'tableColumns',
+            autoNext: false,
+            tableName: getSchemaAndTableNameFromText(result.alterTableStmt.table.getText()).tableName,
+            schemaName: getSchemaAndTableNameFromText(result.alterTableStmt.table.getText()).schema
+          })
+        }
+        return completions;
+      } else if (result.dropStmt) {
+        addKeywords();
+        switch(result.dropStmt.type) {
+          case "table":
+          case "view": {
+            completions.push({
+              type: 'allSchemas'
+            })
+            completions.push({
+              type: 'allTables',
+              disableSys: true
+            })
+            break;
+          }
+        }
+        return completions;
       }
       if (isDot) {
         /**

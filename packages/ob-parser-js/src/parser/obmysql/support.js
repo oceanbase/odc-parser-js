@@ -37,10 +37,14 @@ module.exports = {
         let insertStmt = null;
         let updateStmt = null;
         let deleteStmt = null;
+        let alterTableStmt = null;
+        let dropTableStmt = null;
         parser.parse = function (input, cursorOffset, completionCallback) {
             insertStmt = null;
             updateStmt = null;
             deleteStmt = null;
+            alterTableStmt = null;
+            dropTableStmt = null;
             const isOffsetValid = typeof cursorOffset === 'number';
             const self = this;
             // this.yy.input = input;
@@ -77,10 +81,10 @@ module.exports = {
                 result = originParse.call(self, input);
             } catch (e) {
                 // console.log('parse fail:', e);
-                return { yy: currentyy, error: e, insertStmt, updateStmt, deleteStmt }
+                return { yy: currentyy, error: e, insertStmt, updateStmt, deleteStmt, alterTableStmt, dropTableStmt }
             }
             if (result) {
-                return Object.assign({ yy: currentyy }, { result, insertStmt, updateStmt, deleteStmt })
+                return Object.assign({ yy: currentyy }, { result, insertStmt, updateStmt, deleteStmt, alterTableStmt, dropTableStmt })
             }
         }
         function completion(stack, sstack, sp, completionCallback) {
@@ -312,6 +316,22 @@ module.exports = {
             return;
         }
         return {
+            initAlterTableStmt() {
+                alterTableStmt = {
+                    table: null
+                }
+            },
+            getAlterTableStmt() {
+                return alterTableStmt;
+            },
+            initDropTableStmt() {
+                dropTableStmt = {
+                    tables: []
+                }
+            },
+            getDropTableStmt() {
+                return dropTableStmt;
+            },
             initInsertStmt() {
                 insertStmt = {
                     table: null,
