@@ -90,7 +90,7 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                     onlyKeywords = false;
                 }
                 if (typeof item === 'string') {
-                    suggestions.push(keywordItem(item, range))
+                    suggestions.push(keywordItem(item, range, this.getModelOptions(model.id)?.autoNext ?? true))
                 } else if (item.type === 'allTables') {
                     suggestions = suggestions.concat(await this.getTableList(model, item.schema, range))
                 } else if (item.type === 'tableColumns') {
@@ -121,7 +121,7 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                 }
             }
             if (onlyKeywords) {
-                suggestions.push(keywordItem("RETURN", range));
+                suggestions.push(keywordItem("RETURN", range, this.getModelOptions(model.id)?.autoNext ?? true));
                 suggestions = suggestions.concat(
                     await this.getSnippets(model, range)
                 )

@@ -64,37 +64,23 @@ export default function () {
             editor.current = monaco.editor.create(dom.current, {
                 language: 'obmysql',
                 theme: theme,
-                wordBasedSuggestions: false
+                wordBasedSuggestions: false,
+                inlineSuggest: {
+                    mode: "prefix",
+                    enabled: true,
+                    suppressSuggestions: false
+                }
             });
             const model = editor.current.getModel()?.id;
             if (model) {
                 plugin.setModelOptions(model, {
                     delimiter: ';',
-                    // llm: {
-                    //     async completions(input: string, pos: number) {
-                    //         // input 的 pos 位置增加一个光标
-                    //         const cursor = input.slice(0, pos) + '|' + input.slice(pos);
-                    //         const res = await fetch('http://localhost/v1/workflows/run', {
-                    //             method: 'POST',
-                    //             headers: {
-                    //                 "Authorization": `Bearer app-XyQfvJ9VFtm58VLquEMNHUmO`,
-                    //                 "Content-Type": 'application/json'
-                    //             },
-                    //             body: JSON.stringify({
-                    //                 user: 'shankar',
-                    //                 response_mode: "blocking",
-                    //                 inputs: {
-                    //                     sql: cursor,
-                    //                     currentDatabase: 'dbgpt'
-                    //                 }
-                    //             })
-                    //         })
-                    //         const data = await res.json();
-                    //         const sql = data.data?.outputs?.sql || '';
-                    //         console.log(sql);
-                    //         return sql;
-                    //     }
-                    // },
+                    llm: {
+                        async completions(input: string, pos: number) {
+                            // input 的 pos 位置增加一个光标
+                            return 'select112233'
+                        }
+                    },
                     async getSnippets() {
                         return [
                             {

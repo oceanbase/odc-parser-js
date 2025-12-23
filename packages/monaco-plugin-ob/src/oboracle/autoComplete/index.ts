@@ -96,7 +96,7 @@ class MonacoAutoComplete implements monaco.languages.CompletionItemProvider {
                     onlyKeywords = false;
                 }
                 if (typeof item === 'string') {
-                    suggestions.push(keywordItem(item, range))
+                    suggestions.push(keywordItem(item, range, this.getModelOptions(model.id)?.autoNext ?? true))
                 } else if (item.type === 'allTables') {
                     suggestions = suggestions.concat(await this.getTableList(model, item.schema, range));
                     if (!item.schema && !item.disableSys) {

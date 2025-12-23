@@ -12,13 +12,13 @@ export enum CompletionItemSort{
     Snippet = '52'
 }
 
-export function keywordItem(keyword: string, range: monaco.languages.CompletionItemRanges | monaco.IRange): monaco.languages.CompletionItem {
+export function keywordItem(keyword: string, range: monaco.languages.CompletionItemRanges | monaco.IRange, autoNext: boolean): monaco.languages.CompletionItem {
     return {
         label: keyword,
         range,
         insertText: keyword + ' ',
         kind: monaco.languages.CompletionItemKind.Keyword,
-        command: {id: 'editor.action.triggerSuggest', title: "" },
+        command: autoNext ? {id: 'editor.action.triggerSuggest', title: "" } : undefined,
         sortText: keyword === "*" ? CompletionItemSort.Star :  CompletionItemSort.Keyword
     }
 }

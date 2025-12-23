@@ -23,6 +23,7 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
         this.modelVersion[modelId] = version;
         const currentToken = model.getWordAtPosition(position)
         const plugin = this.getModelOptions(modelId);
+        
         if (!plugin?.llm?.completions) {
             return;
         }
@@ -48,13 +49,18 @@ class MonacoInlineComplete implements monaco.languages.InlineCompletionsProvider
                 })
                 return;
             }
-            
+            /**
+             * 当前行头到光标的内容
+             */
             const start = model.getValueInRange({
                 startLineNumber: position.lineNumber,
                 startColumn: 0,
                 endLineNumber: position.lineNumber,
                 endColumn: position.column
             });
+            /**
+             * 当前行光标到行尾的内容
+             */
             const end = model.getValueInRange({
                 startLineNumber: position.lineNumber,
                 startColumn: position.column,

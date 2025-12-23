@@ -28,6 +28,10 @@ export declare type IFunctionParam = IFunctionParamRich | string;
 
 export interface IModelOptions {
     delimiter: string;
+    /**
+     * 自动提示下一个token,默认为true
+     */
+    autoNext?: boolean;
     getTableList?: (schema?: string) => Promise<string[]>;
     getSchemaList?: () => Promise<string[]>;
     getViewList?: (schema?: string) => Promise<string[]>;
