@@ -16,4 +16,7 @@ module.exports = {
     'jsx',
     'json',
   ],
+  moduleNameMapper: {
+    '^assets/(.*)$': '<rootDir>/assets/libs.d.ts',
+  },
 };
