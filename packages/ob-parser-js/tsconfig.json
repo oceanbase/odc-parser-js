@@ -1,17 +1,26 @@
 {
     "include": ["./src/**/*"],
     "compilerOptions": {
+        "rootDir": "./src",
+        "baseUrl": "./",
         "outDir": "./esm",
         "allowJs": true,
+        "checkJs": false,
         "target": "ES2016",
         "moduleResolution": "node",
         "esModuleInterop": true,
         "skipLibCheck": true,
-        // "declaration": true,
+        "declaration": true,
         // "declarationDir": "./esm",
-        "lib": ["ES2016", "DOM"]
+        "lib": ["ES2016", "DOM"],
+        "paths": {
+            "assets/*": [
+                "./assets/libs.d.ts"
+            ]
+        }
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "assets"
     ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@oceanbase-odc/monaco-plugin-ob",
-  "version": "1.6.5",
+  "version": "1.7.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

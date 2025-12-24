@@ -156,7 +156,11 @@ export default {
 
       statement = sqlDocuments?.statements?.[statementsCount - 1];
     }
-    return statement.getAllFromTable();
+    return {
+          tables: [],
+          tableVariables: []
+        };
+      
   },
   getAutoCompletion(text, delimiter, offset): AutoCompletionItems {
     const convertMap = {

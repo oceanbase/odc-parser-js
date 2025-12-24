@@ -1,9 +1,9 @@
 import simpleFormatter from '../format/simpleFormatter';
 
-//@ts-ignore
-import parser from '../oracle/oracleSQL_ori';
+
+import parser from 'assets/oracleSQL_ori';
 import { initParser } from '../oracle/support';
-import plParser from '../oracle/oraclePL';
+import plParser from 'assets/oraclePL';
 
 
 initParser(parser.Parser.prototype, new Set([1844, 1843]))

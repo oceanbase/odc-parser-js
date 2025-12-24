@@ -1,8 +1,8 @@
 import simpleFormatter from '../format/simpleFormatter';
 //@ts-ignore
 import { initParser } from './support';
-//@ts-ignore
-import mysqlParser from './obmysql';
+
+import mysqlParser from 'assets/obmysql';
 import { IStatement, OBParser } from '../type';
 import SQLSplit from '../split';
 
