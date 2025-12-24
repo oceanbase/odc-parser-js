@@ -17,6 +17,6 @@ module.exports = {
     'json',
   ],
   moduleNameMapper: {
-    '^assets/(.*)$': '<rootDir>/assets/libs.d.ts',
+    '^assets/(.*)$': '<rootDir>/assets/$1',
   },
 };
