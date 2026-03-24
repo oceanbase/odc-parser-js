@@ -250,6 +250,41 @@ export default {
                 break;
               }
             }
+             // 如果内层没找到，向外层 Query 查找
+             if (!tableName) {
+              const outerQueries: Query[] = [];
+              queryMap.forEach((query) => {
+                if (query === tableContext) return;
+                const [start, stop] = query.location?.range || [];
+                if (start != null && stop != null && offset - 1 >= start && offset - 1 <= stop) {
+                  outerQueries.push(query);
+                }
+              });
+              // 按范围从小到大排列（最近的外层优先）
+              outerQueries.sort((a, b) => {
+                const aSize = (a?.location?.range?.[1] ?? 0) - (a?.location?.range?.[0] ?? 0);
+                const bSize = (b?.location?.range?.[1] ?? 0) - (b?.location?.range?.[0] ?? 0);
+                return aSize - bSize;
+              });
+              for (const outerQuery of outerQueries) {
+                for (let fromTable of outerQuery.fromTables) {
+                  let name;
+                  if (fromTable.alias) {
+                    name = fromTable.alias;
+                  } else if (fromTable.tableName) {
+                    name = [fromTable.schemaName, fromTable.tableName]
+                      .filter(Boolean).join('.');
+                  }
+                  if (name === triggerWord) {
+                    isQuery = !!fromTable.query;
+                    tableName = fromTable.tableName;
+                    schemaName = fromTable.schemaName;
+                    break;
+                  }
+                }
+                if (tableName) break;
+              }
+            }
             if (tableName && !isQuery) {
               completions = [
                 {
