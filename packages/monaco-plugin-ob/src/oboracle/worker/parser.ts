@@ -175,7 +175,7 @@ export default {
      * sql 补全
      */
     function sqlCompletion(statement, offset) {
-      let completions: AutoCompletionItems = [];
+      let completions: NonNullable<AutoCompletionItems> = [];
       let tokens, currentRules, followRules, tokenStack: string[] | undefined;
       const isDot = statement.text?.[offset - 1] === '.';
       if (isDot) {
@@ -196,6 +196,40 @@ export default {
         if (tokens) {
           completions = tokens.map(token => convertMap[token] || token);
         }
+      }
+      function getLeftText() {
+        return statement.text.substring(0, offset).toUpperCase().trim();
+      }
+      function isNodeBeforeCursor(node) {
+        const range = node?.location?.range || node?._$?.range;
+        return !range || range[1] < offset;
+      }
+      function addTableTargets() {
+        completions.push({
+          type: 'allSchemas'
+        })
+        completions.push({
+          type: 'allTables',
+          disableSys: true
+        })
+      }
+      function addTableLikeTargets() {
+        addTableTargets();
+        completions.push({
+          type: 'allTableLikeObjects',
+          disableSys: true
+        })
+      }
+      function addCurrentTableColumns(table) {
+        if (!table || !isNodeBeforeCursor(table)) {
+          return;
+        }
+        completions.push({
+          type: 'tableColumns',
+          autoNext: false,
+          tableName: getSchemaAndTableNameFromText(table.getText()).tableName,
+          schemaName: getSchemaAndTableNameFromText(table.getText()).schema
+        })
       }
       function getSchemaAndTableNameFromText(text: string) {
         if (!text) {
@@ -218,92 +252,63 @@ export default {
       }
       if (result.insertStmt) {
         addKeywords();
-        completions.push({
-          type: 'allSchemas'
-        })
-        completions.push({
-          type: 'allTables',
-          disableSys: true
-        })
-        if (result.insertStmt.table) {
-          completions.push({
-            type: 'tableColumns',
-            autoNext: false,
-            tableName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).tableName,
-            schemaName: getSchemaAndTableNameFromText(result.insertStmt.table.getText()).schema
-          })
-        }
+        addTableLikeTargets();
+        addCurrentTableColumns(result.insertStmt.table);
         return completions;
       } else if (result.updateStmt) {
         addKeywords();
-        completions.push({
-          type: 'allSchemas'
-        })
-        completions.push({
-          type: 'allTables',
-          disableSys: true
-        })
-        if (result.updateStmt.table) {
-          completions.push({
-            type: 'tableColumns',
-            autoNext: false,
-            tableName: getSchemaAndTableNameFromText(result.updateStmt.table.getText()).tableName,
-            schemaName: getSchemaAndTableNameFromText(result.updateStmt.table.getText()).schema
-          })
-        }
+        addTableLikeTargets();
+        addCurrentTableColumns(result.updateStmt.table);
         return completions;
       } else if (result.deleteStmt) {
         addKeywords();
-        completions.push({
-          type: 'allSchemas'
-        })
-        completions.push({
-          type: 'allTables',
-          disableSys: true
-        })
-        if (result.deleteStmt.table) {
-          completions.push({
-            type: 'tableColumns',
-            autoNext: false,
-            tableName: getSchemaAndTableNameFromText(result.deleteStmt.table.getText()).tableName,
-            schemaName: getSchemaAndTableNameFromText(result.deleteStmt.table.getText()).schema
-          })
-        }
+        addTableLikeTargets();
+        addCurrentTableColumns(result.deleteStmt.table);
         return completions;
       } else if (result.alterTableStmt) {
-        console.log('alterTableStmt', result.alterTableStmt);
         addKeywords();
-        completions.push({
-          type: 'allSchemas'
-        })
-        completions.push({
-          type: 'allTables',
-          disableSys: true
-        })
-        if (result.alterTableStmt.table) {
-          completions.push({
-            type: 'tableColumns',
-            autoNext: false,
-            tableName: getSchemaAndTableNameFromText(result.alterTableStmt.table.getText()).tableName,
-            schemaName: getSchemaAndTableNameFromText(result.alterTableStmt.table.getText()).schema
-          })
-        }
+        addTableTargets();
+        addCurrentTableColumns(result.alterTableStmt.table);
         return completions;
       } else if (result.dropStmt) {
         addKeywords();
         switch (result.dropStmt.type) {
-          case "table":
+          case "table": {
+            addTableTargets();
+            break;
+          }
           case "view": {
             completions.push({
               type: 'allSchemas'
             })
             completions.push({
-              type: 'allTables',
+              type: 'allTableLikeObjects',
               disableSys: true
             })
             break;
           }
         }
+        return completions;
+      }
+      const leftText = getLeftText();
+      if (/^DROP\s+FUNCTION\b/.test(leftText)) {
+        completions.push({
+          type: 'allUserFunctions'
+        })
+        return completions;
+      }
+      if (/^CALL\b/.test(leftText)) {
+        addKeywords();
+        completions.push({
+          type: 'allUserRoutines'
+        })
+        completions.push({
+          type: 'allPackages'
+        })
+        return completions;
+      }
+      if (/^DROP\b/.test(leftText) || /^ALTER\b/.test(leftText)) {
+        addKeywords();
         return completions;
       }
       if (isDot) {
@@ -347,7 +352,10 @@ export default {
          */
         let tableContext = getTableContextFromMap(queryMap, offset - 1);
         if (!tableContext) {
-          completions = [];
+          completions.push({
+            type: 'objectAccess',
+            objectName: triggerWord
+          });
           return completions;
         }
 
@@ -356,7 +364,7 @@ export default {
           case QueryCursorContext.FromList: {
             completions = [
               {
-                type: 'allTables',
+                type: 'allTableLikeObjects',
                 schema: triggerWord
               }
             ]
@@ -474,9 +482,15 @@ export default {
         completions?.push({
           type: 'allFunction'
         })
+        completions?.push({
+          type: 'allObjects'
+        })
       } else if (queryContext === QueryCursorContext.FromList) {
         completions!.push({
           type: 'allTables'
+        })
+        completions!.push({
+          type: 'allTableLikeObjects'
         })
         completions!.push({
           type: 'allSchemas'
@@ -486,6 +500,10 @@ export default {
             type: 'withTable',
             tableName: withTable.tableName
           })
+        })
+      } else {
+        completions?.push({
+          type: 'allObjects'
         })
       }
       console.log(currentRules, followRules)

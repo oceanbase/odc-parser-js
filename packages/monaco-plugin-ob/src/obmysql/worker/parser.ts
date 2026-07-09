@@ -208,6 +208,10 @@ export default {
           type: 'allTables',
           disableSys: true
         })
+        completions.push({
+          type: 'allTableLikeObjects',
+          disableSys: true
+        })
         if (result.insertStmt.table) {
           completions.push({
             type: 'tableColumns',
@@ -224,6 +228,10 @@ export default {
         })
         completions.push({
           type: 'allTables',
+          disableSys: true
+        })
+        completions.push({
+          type: 'allTableLikeObjects',
           disableSys: true
         })
         if (result.updateStmt.table) {
@@ -244,6 +252,10 @@ export default {
           type: 'allTables',
           disableSys: true
         })
+        completions.push({
+          type: 'allTableLikeObjects',
+          disableSys: true
+        })
         if (result.deleteStmt.table) {
           completions.push({
             type: 'tableColumns',
@@ -262,6 +274,10 @@ export default {
           type: 'allTables',
           disableSys: true
         })
+        completions.push({
+          type: 'allTableLikeObjects',
+          disableSys: true
+        })
         return completions;
       } else if (result.alterTableStmt) {
         addKeywords();
@@ -270,6 +286,10 @@ export default {
         })
         completions.push({
           type: 'allTables',
+          disableSys: true
+        })
+        completions.push({
+          type: 'allTableLikeObjects',
           disableSys: true
         })
         if (result.alterTableStmt.table) {
@@ -332,7 +352,7 @@ export default {
           case QueryCursorContext.FromList: {
             completions = [
               {
-                type: 'allTables',
+                type: 'allTableLikeObjects',
                 schema: triggerWord
               }
             ]
@@ -449,9 +469,15 @@ export default {
         completions?.push({
           type: 'allFunction'
         })
+        completions?.push({
+          type: 'allObjects'
+        })
       } else if (queryContext === QueryCursorContext.FromList) {
         completions!.push({
           type: 'allTables'
+        })
+        completions!.push({
+          type: 'allTableLikeObjects'
         })
         completions!.push({
           type: 'allSchemas'
@@ -461,6 +487,10 @@ export default {
             type: 'withTable',
             tableName: withTable.tableName
           })
+        })
+      } else {
+        completions?.push({
+          type: 'allObjects'
         })
       }
       console.log(currentRules, followRules)

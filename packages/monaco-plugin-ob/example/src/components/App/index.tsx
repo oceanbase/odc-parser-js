@@ -104,6 +104,29 @@ export default function () {
                             }
                         ]
                     },
+                    async getProcedure() {
+                        return [
+                            {
+                                name: 'userProcedure1',
+                                desc: 'mockprocedure',
+                                params: ['p1']
+                            }
+                        ]
+                    },
+                    async getPkgs() {
+                        return [
+                            'mock_pkg'
+                        ]
+                    },
+                    async getPackageSubprograms() {
+                        return [
+                            {
+                                name: 'pkgFunction1',
+                                desc: 'mock package function',
+                                params: ['p1']
+                            }
+                        ]
+                    },
                     async getSchemaList() {
                         return [
                             'schema1',
@@ -124,6 +147,31 @@ export default function () {
                         return [
                             'user_view',
                             'history_view'
+                        ]
+                    },
+                    async getExternalTableList() {
+                        return [
+                            'user_external_table'
+                        ]
+                    },
+                    async getMaterializedViewList() {
+                        return [
+                            'user_materialized_view'
+                        ]
+                    },
+                    async getTriggerList() {
+                        return [
+                            'user_trigger'
+                        ]
+                    },
+                    async getSequenceList() {
+                        return [
+                            'user_sequence'
+                        ]
+                    },
+                    async getSynonymList() {
+                        return [
+                            'user_synonym'
                         ]
                     },
                     async getTableColumns(tableName, dbName?) {

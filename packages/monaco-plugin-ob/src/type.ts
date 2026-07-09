@@ -12,6 +12,14 @@ export interface IFunction {
     body?: string;
 }
 
+export declare type IObjectCompletion = string | {
+    name: string;
+    desc?: string;
+    schema?: string;
+};
+
+export declare type IRoutineCompletion = string | IFunction;
+
 export interface ISnippet {
     label: string;
     documentation: string;
@@ -36,9 +44,15 @@ export interface IModelOptions {
     getSchemaList?: () => Promise<string[]>;
     getViewList?: (schema?: string) => Promise<string[]>;
     getFunctions?: () => Promise<IFunction[]>;
-    getProcedure?: () => Promise<string[]>;
+    getProcedure?: (schema?: string) => Promise<IRoutineCompletion[]>;
     getDataTypes?: () => Promise<string[]>;
     getPkgs?: () => Promise<string[]>;
+    getExternalTableList?: (schema?: string) => Promise<IObjectCompletion[]>;
+    getMaterializedViewList?: (schema?: string) => Promise<IObjectCompletion[]>;
+    getTriggerList?: (schema?: string) => Promise<IObjectCompletion[]>;
+    getSequenceList?: (schema?: string) => Promise<IObjectCompletion[]>;
+    getSynonymList?: (schema?: string) => Promise<IObjectCompletion[]>;
+    getPackageSubprograms?: (pkgName: string, schema?: string) => Promise<IRoutineCompletion[]>;
     getTableColumns?: (tableName: string, dbName?: string) => Promise<{ columnName: string; columnType: string; }[]>;
     getTableDDL?: (tableName: string, dbName?: string) => Promise<string>;
     getSchemaInfo?: (dbName?: string) => Promise<string>;

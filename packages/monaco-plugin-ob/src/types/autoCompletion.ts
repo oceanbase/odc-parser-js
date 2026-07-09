@@ -17,6 +17,38 @@ export interface CompletionAllFunction {
     type: 'allFunction';
 }
 
+export interface CompletionAllUserFunctions {
+    type: 'allUserFunctions';
+}
+
+export interface CompletionAllObjects {
+    type: 'allObjects';
+}
+
+export interface CompletionAllTableLikeObjects {
+    type: 'allTableLikeObjects';
+    schema?: string;
+    disableSys?: boolean;
+}
+
+export interface CompletionAllRoutines {
+    type: 'allRoutines';
+}
+
+export interface CompletionAllUserRoutines {
+    type: 'allUserRoutines';
+}
+
+export interface CompletionAllPackages {
+    type: 'allPackages';
+}
+
+export interface CompletionPackageSubprograms {
+    type: 'packageSubprograms';
+    packageName: string;
+    schemaName?: string;
+}
+
 export interface CompletionTableColumns {
     type: 'tableColumns';
     schemaName?: string;
@@ -38,7 +70,14 @@ export interface CompletionFromTable {
 export type AutoCompletionItems = (
     CompletionAllTables | 
     CompletionObjectAccess | 
+    CompletionAllObjects |
+    CompletionAllTableLikeObjects |
+    CompletionAllRoutines |
+    CompletionAllUserRoutines |
+    CompletionAllPackages |
+    CompletionPackageSubprograms |
     CompletionAllFunction | 
+    CompletionAllUserFunctions | 
     CompletionTableColumns | 
     CompletionAllSchemas | 
     CompletionWithTableName | 
